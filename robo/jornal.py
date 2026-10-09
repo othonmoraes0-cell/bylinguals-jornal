@@ -15,7 +15,9 @@ Roda grátis no GitHub Actions, com um modelo de IA aberto (Qwen2.5 14B, llama.c
  4. Confere cada frase contra os fatos: a que não tem base sai. Se sobrar pouco, a notícia não entra.
  5. Traduz cada frase para o português (OPUS-MT) e entrega ao Portal (token OIDC do GitHub, sem senha).
 """
+import hashlib
 import html
+import random
 import json
 import os
 import re
@@ -342,7 +344,62 @@ def produzir(fatos, n_every, n_real, nota=False):
         "everyday": every[:4] if nota else every[:10],
         "real": real[:4] if nota else real[:12],
         "glossario": glossario,
+        "perguntas": gerar_perguntas(every, real, 2 if nota else 3),
     }, None
+
+
+def gerar_perguntas(every, real, quantas):
+    """Perguntas de compreensão (09/10/2026): em inglês, sobre os fatos da notícia, respondíveis só com o texto do
+    Everyday. Cada uma é conferida: a IA responde de novo lendo só o Everyday; se não acertar, a pergunta sai."""
+    simples, completo = " ".join(every), " ".join(real)
+    pedido = (
+        f"STORY (simple version):\n{simples}\n\nSTORY (full version):\n{completo}\n\n"
+        f"Write {quantas + 1} multiple-choice reading comprehension questions in English for adult learners (CEFR A2-B1) about this story.\n"
+        "Rules: every question must be answerable using ONLY the simple version. Ask about the main facts: who, what, where, why, "
+        "how many, what happened, what will happen. Never ask what a word means. Never ask about something that is not in the story. "
+        "Each question has EXACTLY 3 options, short (max 8 words), all about this story's topic and plausible, only one correct. "
+        "No 'all of the above' or 'none of the above'.\n"
+        'Return JSON: {"questions": [{"question": "...", "options": ["...", "...", "..."], "answer": 0, '
+        '"explanation": "one short sentence in Brazilian Portuguese saying where the answer is in the story"}]}'
+    )
+    try:
+        d = ia([{"role": "system", "content": "You write fair reading comprehension questions. You only answer with JSON."}, {"role": "user", "content": pedido}], max_tokens=900, temperatura=0.4)
+    except Exception:  # noqa: BLE001
+        return []
+    boas = []
+    for q in d.get("questions") or []:
+        if len(boas) >= quantas or not isinstance(q, dict):
+            continue
+        enunciado = str(q.get("question") or "").strip()
+        opcoes = [str(o).strip() for o in q.get("options") or [] if str(o).strip()]
+        try:
+            certa = int(q.get("answer"))
+        except (TypeError, ValueError):
+            continue
+        if len(enunciado) < 8 or len(opcoes) != 3 or not 0 <= certa < 3 or len({o.lower() for o in opcoes}) != 3:
+            continue
+        if PORTUGUES.search(enunciado + " " + " ".join(opcoes)) or re.search(r"\bmean(s|ing)?\b", enunciado, re.I):
+            continue
+        # Conferência: responder lendo só o texto simples. Errou ou ficou em dúvida: a pergunta sai.
+        letras = "ABC"
+        conferencia = (
+            f"TEXT:\n{simples}\n\nQUESTION: {enunciado}\n" + "\n".join(f"{letras[i]}) {o}" for i, o in enumerate(opcoes))
+            + '\n\nAnswer using ONLY the TEXT. If the TEXT does not give the answer, say "none". Return JSON: {"answer": "A" or "B" or "C" or "none"}'
+        )
+        try:
+            r = ia([{"role": "system", "content": "You are a careful reader. You only answer with JSON."}, {"role": "user", "content": conferencia}], max_tokens=40, temperatura=0)
+        except Exception:  # noqa: BLE001
+            continue
+        if str(r.get("answer", "")).strip().upper()[:1] != letras[certa]:
+            print(f"    pergunta descartada na conferência: {enunciado}", flush=True)
+            continue
+        # Embaralha as alternativas (a IA quase sempre põe a certa em primeiro), sempre do mesmo jeito para a mesma pergunta.
+        rnd = random.Random(int(hashlib.sha1(enunciado.encode()).hexdigest()[:8], 16))
+        ordem = list(range(3))
+        rnd.shuffle(ordem)
+        explicacao = str(q.get("explanation") or "").strip()[:300]
+        boas.append({"enunciado": enunciado[:300], "opcoes": [opcoes[i][:200] for i in ordem], "correta": ordem.index(certa), "explicacao": explicacao})
+    return boas
 
 
 # ------------------------------------------------------------------ contexto e tradução
