@@ -1,0 +1,6 @@
+# Tradutor do guia de palavras (o torch vem antes, versão só para processador). Mesmas versões do requirements.txt.
+transformers==4.46.3
+sentencepiece==0.2.0
+sacremoses==0.1.1
+huggingface_hub==0.26.5
+tokenizers==0.20.3
