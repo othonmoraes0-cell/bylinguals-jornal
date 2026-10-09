@@ -106,6 +106,8 @@ TEMAS = {
     }),
 }
 REGIOES = ("US", "World", "Brazil")
+# Todos os veículos (na nota, nenhum nome de veículo aparece no texto).
+VEICULOS = {v for _, regioes in TEMAS.values() for feeds in regioes.values() for v, _ in feeds} | {"Fox News", "Reuters", "AP", "Associated Press", "CNN", "BBC"}
 # Título que não é notícia: chamada para leitores, galeria de fotos, coluna assinada ("… | Fulano de Tal"), homenagem.
 NAO_E_NOTICIA = re.compile(
     r"(send us|your questions|tell us|in pictures|week in images|photos of|^watch|^listen|quiz|crossword|an appreciation|"
@@ -303,8 +305,15 @@ def tirar_inventadas(frases, fatos):
     return [f for f in frases if not numeros_e_nomes_inventados(f, fatos)]
 
 
-def produzir(fatos, n_every, n_real, nota=False):
-    extra = ""
+NOTA_PEDIDO = (
+    "\nThis is a SHORT BRIEF: tell only the main fact. Never name a news outlet or source (do not write 'BBC reported', "
+    "'according to', 'Fox News says'). Never comment on what the news shows or means."
+)
+
+
+def produzir(fatos, n_every, n_real, nota=False, veiculos=()):
+    base = NOTA_PEDIDO if nota else "\nNever comment on what the news shows or means."
+    extra = base
     n_gl = 4 if nota else 8
     for tentativa in range(1, 4):
         d = escrever(fatos, n_every, n_real, extra, n_gl)
@@ -321,11 +330,15 @@ def produzir(fatos, n_every, n_real, nota=False):
         if not defeitos:
             break
         print(f"    tentativa {tentativa}: {defeitos}", flush=True)
-        extra = "\nIMPORTANT: your last answer had problems: " + "; ".join(defeitos) + ". Fix them."
+        extra = base + "\nIMPORTANT: your last answer had problems: " + "; ".join(defeitos) + ". Fix them."
     if PORTUGUES.search(" ".join(every + real)):
         return None, "português na saída"
     every = tirar_inventadas(every, fatos)
     real = tirar_inventadas(real, fatos)
+    every, fora_e = sem_comentario(every, veiculos, nota)
+    real, fora_r = sem_comentario(real, veiculos, nota)
+    if fora_e or fora_r:
+        print(f"    comentário/veículo tirado: {fora_e + fora_r}", flush=True)
     every, real, fora = conferir_frases(fatos, every, real)
     if fora:
         print(f"    conferência tirou: {fora}", flush=True)
@@ -565,10 +578,28 @@ def da_nasa():
     return None
 
 
+# Esporte, cultura e entretenimento: o nome que mais se repete costuma ser time, filme ou artista, e a Wikipedia trazia
+# fato que não tinha nada a ver ("Tampa Bay is a large natural harbor…", 09/10/2026). Nesses temas, sem fundo.
+SEM_WIKIPEDIA = {"sports", "culture", "entertainment"}
+
+# Comentário do robô ("this news shows how…") nunca entra; na nota, nome de veículo também não ("The BBC reported…").
+COMENTARIO = re.compile(r"\b(this (news|story|report)|the news (shows|is)|which shows|shows how|it is (important|interesting)|we can see)\b", re.I)
+ATRIBUICAO = re.compile(r"\b(reported|reports|according to|says that|said that|news outlet|newspaper)\b", re.I)
+
+
+def sem_comentario(frases, veiculos, nota):
+    fora = []
+    saida = []
+    for f in frases:
+        ruim = COMENTARIO.search(f) or (nota and (ATRIBUICAO.search(f) or any(v.lower() in f.lower() for v in veiculos)))
+        (fora if ruim else saida).append(f)
+    return saida, fora
+
+
 def escrever_noticia(g, nota):
     principal = g["fontes"][0]
     fatos = "FACTS:\n" + "\n".join(f"- {f['veiculo']}: {f['titulo']}. {f['resumo']}" for f in g["fontes"])
-    if not nota and not g.get("nasa"):
+    if not nota and not g.get("nasa") and TEMA not in SEM_WIKIPEDIA:
         fundo = contexto_wikipedia(g["fontes"])
         if fundo:
             fatos += "\n\n" + fundo
@@ -578,7 +609,7 @@ def escrever_noticia(g, nota):
     else:
         n_every, n_real = (7, 9) if g.get("nasa") else ((6, 8) if palavras >= 180 else (5, 6))
     try:
-        n, motivo = produzir(fatos, n_every, n_real, nota=nota)
+        n, motivo = produzir(fatos, n_every, n_real, nota=nota, veiculos={f["veiculo"] for f in g["fontes"]} | VEICULOS)
     except Exception as e:  # noqa: BLE001
         n, motivo = None, f"erro: {e}"
     if not n or not n["manchete"] or not n["mancheteEveryday"]:
@@ -601,6 +632,28 @@ ELEICAO = re.compile(
 )
 
 
+# Região Brazil: feed brasileiro também traz notícia de fora ("Trump demite diretora do Fed", g1, 09/10/2026). Fica de fora
+# o que fala de outro país sem nada do Brasil.
+DE_FORA = re.compile(
+    r"\b(trump|biden|eua|estados unidos|washington|casa branca|israel|gaza|hamas|ucr[âa]ni|r[úu]ssia|putin|china|chin[êe]s|xi jinping|"
+    r"jap[ãa]o|[íi]ndia|europa|uni[ãa]o europeia|reino unido|londres|fran[çc]a|alemanha|ir[ãa]\b|venezuela|maduro|argentin|milei|"
+    r"m[ée]xico|canad[áa]|vaticano|papa le[ãa]o|otan|onu)",
+    re.I,
+)
+DO_BRASIL = re.compile(
+    r"(brasil|lula|bolsonaro|\bstf\b|\btse\b|congresso|c[âa]mara|senado|planalto|petrobras|banco central|\bibge\b|\bsus\b|"
+    r"itamaraty|haddad|alckmin|tarc[íi]sio|s[ãa]o paulo|rio de janeiro|minas gerais|bahia|paran[áa]|pernambuco|cear[áa]|rio grande|"
+    r"santa catarina|goi[áa]s|amazonas|amaz[ôo]nia|bras[íi]lia|belo horizonte|salvador|recife|fortaleza|curitiba|porto alegre|manaus|bel[ée]m|"
+    r"flamengo|palmeiras|corinthians|s[ãa]o paulo fc|santos|vasco|botafogo|fluminense|gr[êe]mio|internacional|cruzeiro|atl[ée]tico|brasileir[ãa]o|sele[çc][ãa]o)",
+    re.I,
+)
+
+
+def do_brasil(it):
+    texto = it["titulo"] + " " + it["resumo"][:300]
+    return not DE_FORA.search(texto) or bool(DO_BRASIL.search(texto))
+
+
 def planejar():
     """Para cada tema e região: as notícias completas (grupos de 3+ veículos) e as candidatas a nota, sem repetir assunto."""
     escolhidos = []  # itens já usados por algum tema (para não repetir o acontecimento)
@@ -615,6 +668,8 @@ def planejar():
         plano[chave] = {}
         for regiao in REGIOES:
             itens = [it for it in itens_da_regiao(regioes[regiao]) if chave == "politics" or not ELEICAO.search(it["titulo"] + " " + it["resumo"][:200])]
+            if regiao == "Brazil":
+                itens = [it for it in itens if do_brasil(it)]
             livres = [it for it in itens if not repetido(it)]
             grupos, usados = grupos_da_regiao(livres, POR_REGIAO, apoio_da_regiao(regiao))
             for g in grupos:
