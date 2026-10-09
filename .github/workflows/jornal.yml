@@ -86,36 +86,54 @@ jobs:
           T="${{ inputs.temas }}"
           if [ -z "$T" ] || echo ",$T," | tr -d ' ' | grep -q ",$TEMA,"; then echo "fazer=sim" >> "$GITHUB_OUTPUT"; else echo "fazer=nao" >> "$GITHUB_OUTPUT"; fi
 
-      - uses: actions/checkout@v4
+      # Antes de instalar tudo (uns 8 minutos): o tema de hoje já chegou ao Portal? Então para aqui.
+      - name: Já chegou ao Portal?
+        id: portal
         if: steps.escolha.outputs.fazer == 'sim'
+        run: |
+          if [ "$FORCAR" = "true" ] || [ "$SECO" = "true" ]; then echo "fazer=sim" >> "$GITHUB_OUTPUT"; exit 0; fi
+          case "$TEMA" in
+            politics) NOME="Politics & Elections" ;; economy) NOME="Economy & Personal Finance" ;; business) NOME="Business" ;;
+            science) NOME="Science" ;; health) NOME="Health" ;; sports) NOME="Sports" ;; culture) NOME="Culture" ;;
+            space) NOME="Space & Earth" ;; entertainment) NOME="Entertainment & Curiosities" ;;
+          esac
+          DIA_Q=${DIA:-$(TZ=America/Sao_Paulo date +%F)}
+          TOKEN=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=bylinguals-portal" | python3 -c 'import sys,json;print(json.load(sys.stdin)["value"])')
+          Q=$(python3 -c 'import sys,urllib.parse;print(urllib.parse.quote(sys.argv[1]))' "$NOME")
+          STATUS=$(curl -sS -o hoje.json -w "%{http_code}" -H "Authorization: Bearer $TOKEN" "$SITE_URL/api/robo/jornal?dia=$DIA_Q&tema=$Q") || STATUS=000
+          echo "HTTP $STATUS $(cat hoje.json 2>/dev/null)"
+          if [ "$STATUS" = "200" ] && grep -q '"existe":true' hoje.json; then echo "::notice title=Jornal::$NOME já está no Portal hoje"; echo "fazer=nao" >> "$GITHUB_OUTPUT"; else echo "fazer=sim" >> "$GITHUB_OUTPUT"; fi
+
+      - uses: actions/checkout@v4
+        if: steps.escolha.outputs.fazer == 'sim' && steps.portal.outputs.fazer == 'sim'
 
       - uses: actions/setup-python@v5
-        if: steps.escolha.outputs.fazer == 'sim'
+        if: steps.escolha.outputs.fazer == 'sim' && steps.portal.outputs.fazer == 'sim'
         with:
           python-version: "3.11"
           cache: pip
           cache-dependency-path: robo/requirements*.txt
 
       - name: Ferramentas
-        if: steps.escolha.outputs.fazer == 'sim'
+        if: steps.escolha.outputs.fazer == 'sim' && steps.portal.outputs.fazer == 'sim'
         run: |
           pip install -q trafilatura==1.12.2 requests==2.32.3
           pip install -q torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
           pip install -q -r robo/requirements-traducao.txt
 
       - name: llama.cpp (compilado aqui, só o servidor)
-        if: steps.escolha.outputs.fazer == 'sim'
+        if: steps.escolha.outputs.fazer == 'sim' && steps.portal.outputs.fazer == 'sim'
         run: |
           git clone --depth 1 https://github.com/ggml-org/llama.cpp llama
           cmake -S llama -B llama/build -DLLAMA_CURL=OFF -DGGML_NATIVE=ON -DCMAKE_BUILD_TYPE=Release > /dev/null
           cmake --build llama/build --target llama-server -j "$(nproc)" > /dev/null
 
       - name: Baixar o modelo
-        if: steps.escolha.outputs.fazer == 'sim'
+        if: steps.escolha.outputs.fazer == 'sim' && steps.portal.outputs.fazer == 'sim'
         run: curl -sSL --retry 3 -o modelo.gguf "https://huggingface.co/bartowski/Qwen2.5-14B-Instruct-GGUF/resolve/main/Qwen2.5-14B-Instruct-Q4_K_M.gguf" && ls -lh modelo.gguf
 
       - name: Escrever o tema
-        if: steps.escolha.outputs.fazer == 'sim'
+        if: steps.escolha.outputs.fazer == 'sim' && steps.portal.outputs.fazer == 'sim'
         run: |
           llama/build/bin/llama-server -m modelo.gguf -c 6144 -t $(nproc) --port 8080 > servidor.log 2>&1 &
           for i in $(seq 1 150); do curl -s localhost:8080/health | grep -q ok && break; sleep 2; done
