@@ -7,7 +7,8 @@ num robô separado, em paralelo (variável TEMA). A notícia COMPLETA só sai qu
 
 Roda grátis no GitHub Actions, com um modelo de IA aberto (Qwen2.5 14B, llama.cpp no processador):
  1. Lê os feeds. Fonte principal: The New York Times (seções) e CNN Brasil. Apoio: BBC, Guardian, DW, NPR e g1.
-    De jornal, usa SÓ o título e o resumo que o próprio veículo publica no feed — nunca abre a matéria (direitos reservados).
+    De jornal, lê o título, o resumo do feed e o começo da matéria (até 300-500 palavras), só para tirar os FATOS: o aluno
+    nunca vê o texto do jornal; o robô reescreve com as próprias palavras e frase copiada (8 palavras seguidas) é recusada.
     NASA (domínio público): a matéria inteira e a foto.
  2. Junta o mesmo assunto em vários veículos. Só entra notícia com 3 ou mais veículos (ou da NASA): com menos fatos a IA
     "completa" com o que não existe (piloto de 09/10/2026).
@@ -56,7 +57,7 @@ ABC = "https://abcnews.go.com/abcnews/{}"
 CNNBR = "https://www.cnnbrasil.com.br/{}/feed/"
 NASA = "https://www.nasa.gov/news-release/feed/"
 
-# Fontes por tema e região: (veículo, feed). De jornal, SÓ título e resumo do feed. Veículos dos dois lados do espectro
+# Fontes por tema e região: (veículo, feed). Do jornal saem só os fatos (texto reescrito). Veículos dos dois lados do espectro
 # político nos EUA (NYT, NPR, CBS, ABC e Fox) e várias redações no Brasil, para a notícia completa ter 3+ olhares.
 TEMAS = {
     "politics": ("Politics & Elections", {
@@ -170,6 +171,37 @@ def itens_do_feed(url, veiculo):
     print(f"  feed ok: {veiculo} {url} ({len(itens)})", flush=True)
     CACHE_DE_FEEDS[url] = itens
     return [dict(x) for x in itens]
+
+
+CACHE_DE_MATERIAS = {}
+BARREIRA = re.compile(r"(subscribe|subscription|sign in to|log in to|assine|assinante|cookies? (policy|settings)|enable javascript)", re.I)
+
+
+def texto_da_materia(it, palavras=300):
+    """Mais contexto (09/10/2026, pedido do usuário): o começo da matéria original, só para o robô tirar os FATOS. O texto
+    do jornal nunca vai para o aluno: o robô reescreve com as próprias palavras (frase copiada é recusada mais adiante).
+    Paywall, página de cookies ou texto curto: fica o resumo do feed."""
+    link = it["link"]
+    if link not in CACHE_DE_MATERIAS:
+        texto = ""
+        try:
+            bruto = baixar(link)
+            texto = trafilatura.extract(bruto, include_comments=False, include_tables=False, favor_precision=True) or ""
+        except Exception:  # noqa: BLE001
+            texto = ""
+        texto = " ".join(texto.split())
+        if len(texto.split()) < 80 or BARREIRA.search(texto[:600]):
+            texto = ""
+        CACHE_DE_MATERIAS[link] = texto
+    texto = CACHE_DE_MATERIAS[link]
+    return " ".join(texto.split()[:palavras]) if texto else ""
+
+
+def copiada(frase, fatos, tamanho=8):
+    """A frase repete 8 palavras seguidas da fonte? Então não foi escrita com as próprias palavras."""
+    fonte = " " + " ".join(re.findall(r"[a-z0-9']+", fatos.lower())) + " "
+    p = re.findall(r"[a-z0-9']+", frase.lower())
+    return any(" " + " ".join(p[i : i + tamanho]) + " " in fonte for i in range(0, max(0, len(p) - tamanho + 1)))
 
 
 def palavras_chave(texto):
@@ -306,7 +338,7 @@ def tirar_inventadas(frases, fatos):
 
 
 NOTA_PEDIDO = (
-    "\nThis is a SHORT BRIEF: tell only the main fact. Never name a news outlet or source (do not write 'BBC reported', "
+    "\nThis is a BRIEF: the main fact first, then the most important details and context from the FACTS. Never name a news outlet or source (do not write 'BBC reported', "
     "'according to', 'Fox News says'). Never comment on what the news shows or means."
 )
 
@@ -314,7 +346,7 @@ NOTA_PEDIDO = (
 def produzir(fatos, n_every, n_real, nota=False, veiculos=()):
     base = NOTA_PEDIDO if nota else "\nNever comment on what the news shows or means."
     extra = base
-    n_gl = 4 if nota else 8
+    n_gl = 6 if nota else 8
     for tentativa in range(1, 4):
         d = escrever(fatos, n_every, n_real, extra, n_gl)
         every = [str(x).strip() for x in d.get("everyday_sentences") or [] if str(x).strip()]
@@ -335,6 +367,11 @@ def produzir(fatos, n_every, n_real, nota=False, veiculos=()):
         return None, "português na saída"
     every = tirar_inventadas(every, fatos)
     real = tirar_inventadas(real, fatos)
+    copiadas = [f for f in every + real if copiada(f, fatos)]
+    if copiadas:
+        print(f"    frase copiada da fonte tirada: {copiadas}", flush=True)
+    every = [f for f in every if f not in copiadas]
+    real = [f for f in real if f not in copiadas]
     every, fora_e = sem_comentario(every, veiculos, nota)
     real, fora_r = sem_comentario(real, veiculos, nota)
     if fora_e or fora_r:
@@ -342,7 +379,7 @@ def produzir(fatos, n_every, n_real, nota=False, veiculos=()):
     every, real, fora = conferir_frases(fatos, every, real)
     if fora:
         print(f"    conferência tirou: {fora}", flush=True)
-    if (len(every) < 2 or len(real) < 2) if nota else (len(every) < 4 or len(real) < 5):
+    if (len(every) < 3 or len(real) < 3) if nota else (len(every) < 4 or len(real) < 5):
         return None, f"sobrou pouco depois da conferência ({len(every)}/{len(real)})"
     texto_real = " ".join(real).lower()
     glossario = []
@@ -354,10 +391,10 @@ def produzir(fatos, n_every, n_real, nota=False, veiculos=()):
         "tipo": "NOTA" if nota else "COMPLETA",
         "manchete": str(d.get("headline_real") or "").strip()[:160],
         "mancheteEveryday": str(d.get("headline_everyday") or "").strip()[:160],
-        "everyday": every[:4] if nota else every[:10],
-        "real": real[:4] if nota else real[:12],
+        "everyday": every[:7] if nota else every[:10],
+        "real": real[:8] if nota else real[:12],
         "glossario": glossario,
-        "perguntas": gerar_perguntas(every, real, 2 if nota else 3),
+        "perguntas": gerar_perguntas(every, real, 3),
     }, None
 
 
@@ -598,16 +635,25 @@ def sem_comentario(frases, veiculos, nota):
 
 def escrever_noticia(g, nota):
     principal = g["fontes"][0]
-    fatos = "FACTS:\n" + "\n".join(f"- {f['veiculo']}: {f['titulo']}. {f['resumo']}" for f in g["fontes"])
+    if g.get("nasa"):
+        fatos = "FACTS:\n" + "\n".join(f"- {f['veiculo']}: {f['titulo']}. {f['resumo']}" for f in g["fontes"])
+    else:
+        # Nota: uma fonte, até 500 palavras da matéria. Completa: até 300 palavras de cada uma das 4 primeiras fontes.
+        linhas = []
+        for k, f in enumerate(g["fontes"]):
+            corpo = texto_da_materia(f, 500 if nota else 300) if (nota or k < 4) else ""
+            linhas.append(f"- {f['veiculo']}: {f['titulo']}. {corpo or f['resumo']}")
+        fatos = "FACTS:\n" + "\n".join(linhas)
     if not nota and not g.get("nasa") and TEMA not in SEM_WIKIPEDIA:
         fundo = contexto_wikipedia(g["fontes"])
         if fundo:
             fatos += "\n\n" + fundo
     palavras = len(fatos.split())
+    # Mais texto para o aluno ler e responder (09/10/2026): nota com 5-6 frases; completa com 7-10.
     if nota:
-        n_every, n_real = 3, 3
+        n_every, n_real = (5, 6) if palavras >= 120 else (4, 4)
     else:
-        n_every, n_real = (7, 9) if g.get("nasa") else ((6, 8) if palavras >= 180 else (5, 6))
+        n_every, n_real = (8, 10) if g.get("nasa") or palavras >= 400 else ((7, 9) if palavras >= 180 else (5, 6))
     try:
         n, motivo = produzir(fatos, n_every, n_real, nota=nota, veiculos={f["veiculo"] for f in g["fontes"]} | VEICULOS)
     except Exception as e:  # noqa: BLE001

@@ -135,7 +135,7 @@ jobs:
       - name: Escrever o tema
         if: steps.escolha.outputs.fazer == 'sim' && steps.portal.outputs.fazer == 'sim'
         run: |
-          llama/build/bin/llama-server -m modelo.gguf -c 6144 -t $(nproc) --port 8080 > servidor.log 2>&1 &
+          llama/build/bin/llama-server -m modelo.gguf -c 8192 -t $(nproc) --port 8080 > servidor.log 2>&1 &
           for i in $(seq 1 150); do curl -s localhost:8080/health | grep -q ok && break; sleep 2; done
           python robo/jornal.py
 
