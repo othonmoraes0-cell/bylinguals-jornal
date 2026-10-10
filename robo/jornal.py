@@ -54,60 +54,63 @@ G1 = "https://g1.globo.com/rss/g1/{}/"
 CBS = "https://www.cbsnews.com/latest/rss/{}"
 FOX = "https://moxie.foxnews.com/google-publisher/{}.xml"
 ABC = "https://abcnews.go.com/abcnews/{}"
-CNNBR = "https://www.cnnbrasil.com.br/{}/feed/"
+# A CNN Brasil tirou os feeds por seção (todos vieram vazios em 10/10/2026): sobrou o da home, filtrado pelo
+# trecho do endereço de cada editoria.
+CNNBR = "https://www.cnnbrasil.com.br/feed/"
+ESTADAO = "https://www.estadao.com.br/arc/outboundfeeds/feeds/rss/sections/ultimas/?outputType=xml"
 NASA = "https://www.nasa.gov/news-release/feed/"
-# Reuters (10/10/2026, pedido do usuário: "podemos coletar informações da Reuters, é uma ótima fonte"). A Reuters não
-# publica mais os feeds antigos de reuters.com; o que resta são os da Reuters Agency. Se um deles não responder, o robô
-# simplesmente segue sem ele — o modo SO_FEEDS mostra quantos itens cada feed trouxe.
-REUTERS = "https://www.reutersagency.com/feed/?best-topics={}&post_type=best"
+# Reuters (10/10/2026, pedido do usuário: "podemos coletar informações da Reuters, é uma ótima fonte"). NÃO DEU:
+# a Reuters não publica mais feed público nenhum. Foram testados no Actions, e os sete vieram vazios:
+# reutersagency.com/feed (todos os best-topics), reuters.com/arc/outboundfeeds/rss (world, business e raiz),
+# reuters.com/rssFeed/worldNews e a variante taxonomy. Se um dia voltar, é só pôr a URL em CANDIDATOS e rodar SO_FEEDS.
 
 # Fontes por tema e região: (veículo, feed). Do jornal saem só os fatos (texto reescrito). Veículos dos dois lados do espectro
 # político nos EUA (NYT, NPR, CBS, ABC e Fox) e várias redações no Brasil, para a notícia completa ter 3+ olhares.
 TEMAS = {
     "politics": ("Politics & Elections", {
         "US": [("The New York Times", NYT + "Politics.xml"), ("NPR", NPR.format(1014)), ("CBS News", CBS.format("politics")), ("Fox News", FOX.format("politics")), ("ABC News", ABC.format("politicsheadlines"))],
-        "World": [("The New York Times", NYT + "World.xml"), ("Reuters", REUTERS.format("political-general")), ("BBC", BBC.format("world")), ("The Guardian", GUA.format("world")), ("DW", "https://rss.dw.com/rdf/rss-en-all"), ("Al Jazeera", "https://www.aljazeera.com/xml/rss/all.xml"), ("France 24", "https://www.france24.com/en/rss")],
-        "Brazil": [("g1", G1.format("politica")), ("Folha de S.Paulo", FOLHA.format("poder")), ("CNN Brasil", CNNBR.format("politica")), ("Poder360", "https://www.poder360.com.br/feed/"), ("BBC News Brasil", "https://feeds.bbci.co.uk/portuguese/rss.xml")],
+        "World": [("The New York Times", NYT + "World.xml"), ("BBC", BBC.format("world")), ("The Guardian", GUA.format("world")), ("DW", "https://rss.dw.com/rdf/rss-en-all"), ("Al Jazeera", "https://www.aljazeera.com/xml/rss/all.xml"), ("France 24", "https://www.france24.com/en/rss")],
+        "Brazil": [("g1", G1.format("politica")), ("Folha de S.Paulo", FOLHA.format("poder")), ("CNN Brasil", CNNBR, "/politica/"), ("Poder360", "https://www.poder360.com.br/feed/"), ("BBC News Brasil", "https://feeds.bbci.co.uk/portuguese/rss.xml")],
     }),
     "economy": ("Economy & Personal Finance", {
-        "US": [("The New York Times", NYT + "Economy.xml"), ("The New York Times", NYT + "YourMoney.xml"), ("Reuters", REUTERS.format("business-finance")), ("NPR", NPR.format(1017)), ("CNBC", "https://www.cnbc.com/id/21324812/device/rss/rss.html"), ("CBS News", CBS.format("moneywatch"))],
-        "World": [("Reuters", REUTERS.format("business-finance")), ("BBC", BBC.format("business")), ("The Guardian", GUA.format("business/economics")), ("DW", "https://rss.dw.com/rdf/rss-en-bus")],
-        "Brazil": [("g1", G1.format("economia")), ("InfoMoney", "https://www.infomoney.com.br/economia/feed/"), ("InfoMoney", "https://www.infomoney.com.br/minhas-financas/feed/"), ("Folha de S.Paulo", FOLHA.format("mercado")), ("CNN Brasil", CNNBR.format("economia"))],
+        "US": [("The New York Times", NYT + "Economy.xml"), ("The New York Times", NYT + "YourMoney.xml"), ("NPR", NPR.format(1017)), ("CNBC", "https://www.cnbc.com/id/21324812/device/rss/rss.html"), ("CBS News", CBS.format("moneywatch"))],
+        "World": [("BBC", BBC.format("business")), ("The Guardian", GUA.format("business/economics")), ("DW", "https://rss.dw.com/rdf/rss-en-bus")],
+        "Brazil": [("g1", G1.format("economia")), ("InfoMoney", "https://www.infomoney.com.br/feed/"), ("Folha de S.Paulo", FOLHA.format("mercado")), ("CNN Brasil", CNNBR, "/economia/")],
     }),
     "business": ("Business", {
         "US": [("The New York Times", NYT + "Business.xml"), ("NPR", NPR.format(1006)), ("CNBC", "https://www.cnbc.com/id/100003114/device/rss/rss.html"), ("ABC News", ABC.format("moneyheadlines")), ("The New York Times", NYT + "Technology.xml")],
-        "World": [("Reuters", REUTERS.format("tech")), ("The Guardian", GUA.format("business")), ("BBC", BBC.format("technology")), ("DW", "https://rss.dw.com/rdf/rss-en-bus"), ("BBC", BBC.format("business"))],
-        "Brazil": [("Exame", "https://exame.com/feed/"), ("g1", G1.format("tecnologia")), ("CNN Brasil", CNNBR.format("economia/negocios")), ("Folha de S.Paulo", FOLHA.format("mercado"))],
+        "World": [("The Guardian", GUA.format("business")), ("BBC", BBC.format("technology")), ("DW", "https://rss.dw.com/rdf/rss-en-bus"), ("BBC", BBC.format("business"))],
+        "Brazil": [("Exame", "https://exame.com/feed/"), ("g1", G1.format("tecnologia")), ("CNN Brasil", CNNBR, "/economia/"), ("Folha de S.Paulo", FOLHA.format("mercado"))],
     }),
     "science": ("Science", {
         "US": [("The New York Times", NYT + "Science.xml"), ("NPR", NPR.format(1007)), ("CBS News", CBS.format("science")), ("ScienceDaily", "https://www.sciencedaily.com/rss/top/science.xml")],
-        "World": [("Reuters", REUTERS.format("science")), ("BBC", BBC.format("science_and_environment")), ("The Guardian", GUA.format("science")), ("New Scientist", "https://www.newscientist.com/feed/home/"), ("DW", "https://rss.dw.com/rdf/rss-en-sci")],
+        "World": [("BBC", BBC.format("science_and_environment")), ("The Guardian", GUA.format("science")), ("DW", "https://rss.dw.com/rdf/rss-en-all")],
         "Brazil": [("g1", G1.format("ciencia")), ("Folha de S.Paulo", FOLHA.format("ciencia")), ("Jornal da USP", "https://jornal.usp.br/feed/"), ("Pesquisa FAPESP", "https://revistapesquisa.fapesp.br/feed/")],
     }),
     "health": ("Health", {
         "US": [("The New York Times", NYT + "Health.xml"), ("NPR", NPR.format(1128)), ("CBS News", CBS.format("health")), ("ABC News", ABC.format("healthheadlines")), ("Fox News", FOX.format("health"))],
-        "World": [("Reuters", REUTERS.format("health")), ("BBC", BBC.format("health")), ("The Guardian", GUA.format("society/health")), ("WHO", "https://www.who.int/rss-feeds/news-english.xml")],
-        "Brazil": [("g1", G1.format("saude")), ("Folha de S.Paulo", FOLHA.format("equilibrioesaude")), ("CNN Brasil", CNNBR.format("saude")), ("g1", G1.format("ciencia-e-saude"))],
+        "World": [("BBC", BBC.format("health")), ("The Guardian", GUA.format("society/health")), ("WHO", "https://www.who.int/rss-feeds/news-english.xml")],
+        "Brazil": [("g1", G1.format("saude")), ("Folha de S.Paulo", FOLHA.format("equilibrioesaude")), ("CNN Brasil", CNNBR, "/saude/"), ("g1", G1.format("ciencia-e-saude"))],
     }),
     "sports": ("Sports", {
-        "US": [("The New York Times", NYT + "Sports.xml"), ("ESPN", "https://www.espn.com/espn/rss/news"), ("CBS Sports", "https://www.cbssports.com/rss/headlines/"), ("Fox News", FOX.format("sports"))],
-        "World": [("Reuters", REUTERS.format("sports")), ("BBC", "https://feeds.bbci.co.uk/sport/rss.xml"), ("The Guardian", GUA.format("sport")), ("ESPN", "https://www.espn.com/espn/rss/soccer/news")],
-        "Brazil": [("ge", "https://ge.globo.com/rss/ge/"), ("Folha de S.Paulo", FOLHA.format("esporte")), ("CNN Brasil", CNNBR.format("esportes")), ("UOL", "https://rss.uol.com.br/feed/esporte.xml")],
+        "US": [("The New York Times", NYT + "Soccer.xml"), ("CBS Sports", "https://www.cbssports.com/rss/headlines/"), ("Fox News", FOX.format("sports"))],
+        "World": [("BBC", "https://feeds.bbci.co.uk/sport/rss.xml"), ("The Guardian", GUA.format("sport")), ("Agência Brasil", "https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml", "/esportes/")],
+        "Brazil": [("ge", "https://ge.globo.com/rss/ge/"), ("Folha de S.Paulo", FOLHA.format("esporte")), ("CNN Brasil", CNNBR, "/esportes/"), ("Estadão", ESTADAO, "/esportes/")],
     }),
     "culture": ("Culture", {
         "US": [("The New York Times", NYT + "Arts.xml"), ("The New York Times", NYT + "Books.xml"), ("NPR", NPR.format(1008)), ("CBS News", CBS.format("entertainment"))],
         "World": [("BBC", BBC.format("entertainment_and_arts")), ("The Guardian", GUA.format("culture")), ("The Guardian", GUA.format("books")), ("DW", "https://rss.dw.com/rdf/rss-en-cul")],
-        "Brazil": [("g1", G1.format("pop-arte")), ("Folha de S.Paulo", FOLHA.format("ilustrada")), ("CNN Brasil", CNNBR.format("entretenimento"))],
+        "Brazil": [("g1", G1.format("pop-arte")), ("Folha de S.Paulo", FOLHA.format("ilustrada")), ("CNN Brasil", CNNBR, "/pop/")],
     }),
     "space": ("Space & Earth", {
-        "US": [("NASA", NASA), ("The New York Times", NYT + "Space.xml"), ("The New York Times", NYT + "Climate.xml"), ("Space.com", "https://www.space.com/feeds/all"), ("NPR", NPR.format(1025))],
-        "World": [("ESA", "https://www.esa.int/rssfeed/Our_Activities/Space_News"), ("Reuters", REUTERS.format("environment")), ("The Guardian", GUA.format("environment")), ("BBC", BBC.format("science_and_environment")), ("Space.com", "https://www.space.com/feeds/all")],
+        "US": [("NASA", NASA), ("The New York Times", NYT + "Space.xml"), ("The New York Times", NYT + "Climate.xml"), ("NPR", NPR.format(1025))],
+        "World": [("ESA", "https://www.esa.int/rssfeed/Our_Activities/Space_News"), ("The Guardian", GUA.format("environment")), ("BBC", BBC.format("science_and_environment")), ("Agência Brasil", "https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml", "/geral/")],
         "Brazil": [("g1", G1.format("natureza")), ("Folha de S.Paulo", FOLHA.format("ambiente")), ("g1", G1.format("ciencia")), ("Jornal da USP", "https://jornal.usp.br/feed/")],
     }),
     "entertainment": ("Entertainment & Curiosities", {
         "US": [("The New York Times", NYT + "Movies.xml"), ("The New York Times", NYT + "Television.xml"), ("Variety", "https://variety.com/feed/"), ("The Hollywood Reporter", "https://www.hollywoodreporter.com/feed/"), ("Smithsonian", "https://www.smithsonianmag.com/rss/latest_articles/")],
         "World": [("The Guardian", GUA.format("film")), ("The Guardian", GUA.format("music")), ("BBC", BBC.format("entertainment_and_arts")), ("Mental Floss", "https://www.mentalfloss.com/rss.xml")],
-        "Brazil": [("g1", G1.format("pop-arte")), ("CNN Brasil", CNNBR.format("entretenimento")), ("UOL", "https://rss.uol.com.br/feed/entretenimento.xml"), ("Folha de S.Paulo", FOLHA.format("ilustrada"))],
+        "Brazil": [("g1", G1.format("pop-arte")), ("CNN Brasil", CNNBR, "/pop/"), ("Veja", "https://veja.abril.com.br/feed/"), ("Folha de S.Paulo", FOLHA.format("ilustrada"))],
     }),
 }
 REGIOES = ("US", "World", "Brazil")
@@ -116,31 +119,23 @@ REGIOES = ("US", "World", "Brazil")
 # outras. É assim que se descobre o endereço novo de um veículo cujo feed morreu, sem arriscar a edição do dia.
 # Quem passar no teste entra em TEMAS; quem não passar sai daqui.
 CANDIDATOS = [
+    # A Reuters continua aqui para o dia em que voltar a publicar feed: um SO_FEEDS avisa.
     ("Reuters world", "https://www.reuters.com/arc/outboundfeeds/rss/category/world/?outputType=xml"),
-    ("Reuters business", "https://www.reuters.com/arc/outboundfeeds/rss/category/business/?outputType=xml"),
     ("Reuters tudo", "https://www.reuters.com/arc/outboundfeeds/rss/?outputType=xml"),
-    ("Reuters antigo", "https://www.reuters.com/rssFeed/worldNews"),
-    ("Reuters agency taxonomy", "https://www.reutersagency.com/feed/?taxonomy=best-topics&post_type=best&best-topics=business-finance"),
-    ("CNN Brasil raiz", "https://www.cnnbrasil.com.br/feed/"),
-    ("CNN Brasil nacional", "https://www.cnnbrasil.com.br/nacional/feed/"),
-    ("InfoMoney raiz", "https://www.infomoney.com.br/feed/"),
-    ("InfoMoney mercados", "https://www.infomoney.com.br/mercados/feed/"),
-    ("NYT Soccer", "https://rss.nytimes.com/services/xml/rss/nyt/Soccer.xml"),
-    ("NYT Sports 2", "https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/sports/rss.xml"),
-    ("ESPN top", "https://www.espn.com/espn/rss/news?device=desktop"),
-    ("ESPN nfl", "https://www.espn.com/espn/rss/nfl/news"),
-    ("UOL noticias", "https://rss.uol.com.br/feed/noticias.xml"),
-    ("Space.com 2", "https://www.space.com/feeds.xml"),
-    ("New Scientist 2", "https://www.newscientist.com/section/news/feed/"),
-    ("DW ciencia 2", "https://rss.dw.com/xml/rss-en-sci"),
-    ("Lance esportes", "https://www.lance.com.br/feed"),
-    ("Agência Brasil", "https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml"),
-    ("Estadão", "https://www.estadao.com.br/arc/outboundfeeds/feeds/rss/sections/ultimas/?outputType=xml"),
-    ("Veja", "https://veja.abril.com.br/feed/"),
-    ("Poder360 economia", "https://www.poder360.com.br/economia/feed/"),
+    ("Reuters agency", "https://www.reutersagency.com/feed/?best-topics=business-finance&post_type=best"),
+    # Buracos que sobraram: esporte dos EUA, espaço e ciência do mundo.
+    ("ESPN rss", "https://www.espn.com/espn/rss/news"),
+    ("Sky Sports", "https://www.skysports.com/rss/12040"),
+    ("Space.com atual", "https://www.space.com/feeds/all"),
+    ("Phys.org espaço", "https://phys.org/rss-feed/space-news/"),
+    ("Phys.org ciência", "https://phys.org/rss-feed/"),
+    ("Nature news", "https://www.nature.com/nature.rss"),
+    ("Science News", "https://www.sciencenews.org/feed"),
+    ("Scientific American", "https://www.scientificamerican.com/platform/syndication/rss/"),
+    ("AP top", "https://apnews.com/index.rss"),
 ]
 # Todos os veículos (na nota, nenhum nome de veículo aparece no texto).
-VEICULOS = {v for _, regioes in TEMAS.values() for feeds in regioes.values() for v, _ in feeds} | {"Fox News", "Reuters", "AP", "Associated Press", "CNN", "BBC"}
+VEICULOS = {f[0] for _, regioes in TEMAS.values() for feeds in regioes.values() for f in feeds} | {"Fox News", "Reuters", "AP", "Associated Press", "CNN", "BBC"}
 # Título que não é notícia: chamada para leitores, galeria de fotos, coluna assinada ("… | Fulano de Tal"), homenagem.
 NAO_E_NOTICIA = re.compile(
     r"(send us|your questions|tell us|in pictures|week in images|photos of|^watch|^listen|quiz|crossword|an appreciation|"
@@ -578,13 +573,23 @@ def aviso(msg):
 
 # ------------------------------------------------------------------ edição
 
+def partes(feed):
+    """Um feed é (veículo, url) ou (veículo, url, trecho-do-link). O terceiro serve para usar um feed GERAL dentro de um
+    tema: só entra o item cujo endereço tem aquele trecho (10/10/2026, quando os feeds por seção da CNN Brasil morreram
+    e só sobrou o feed da home)."""
+    return (feed[0], feed[1], feed[2] if len(feed) > 2 else None)
+
+
 def itens_da_regiao(feeds):
     """Os itens de todos os feeds de uma região, com a posição no feed (o que o jornal pôs em cima vem primeiro)."""
     vistos, itens = set(), []
-    for veiculo, url in feeds:
+    for feed in feeds:
+        veiculo, url, so_com = partes(feed)
         if url == NASA:
             continue
         for posicao, it in enumerate(itens_do_feed(url, veiculo)):
+            if so_com and so_com not in it["link"]:
+                continue
             if it["link"] in vistos or FORA.search(it["link"]) or NAO_E_NOTICIA.search(it["titulo"]) or len(it["resumo"].split()) < 12:
                 continue
             vistos.add(it["link"])
@@ -597,9 +602,11 @@ def apoio_da_regiao(regiao):
     """Todos os feeds da região, de todos os temas: o mesmo acontecimento pode estar na seção de outro jornal."""
     feeds, vistos = [], set()
     for _, regioes in TEMAS.values():
-        for veiculo, url in regioes[regiao]:
+        for feed in regioes[regiao]:
+            veiculo, url, _so = partes(feed)
             if url not in vistos:
                 vistos.add(url)
+                # No apoio o feed geral entra inteiro: aqui a busca é pelo MESMO acontecimento, em qualquer seção.
                 feeds.append((veiculo, url))
     return itens_da_regiao(feeds)
 
@@ -784,7 +791,7 @@ def so_feeds():
     vistos, mortos = {}, []
     for _, regioes in TEMAS.values():
         for feeds in regioes.values():
-            for veiculo, url in feeds:
+            for veiculo, url, _so in (partes(f) for f in feeds):
                 if url in vistos:
                     continue
                 try:
