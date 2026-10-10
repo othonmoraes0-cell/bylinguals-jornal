@@ -83,8 +83,8 @@ TEMAS = {
         "Brazil": [("Exame", "https://exame.com/feed/"), ("g1", G1.format("tecnologia")), ("CNN Brasil", CNNBR, "/economia/"), ("Folha de S.Paulo", FOLHA.format("mercado"))],
     }),
     "science": ("Science", {
-        "US": [("The New York Times", NYT + "Science.xml"), ("NPR", NPR.format(1007)), ("CBS News", CBS.format("science")), ("ScienceDaily", "https://www.sciencedaily.com/rss/top/science.xml")],
-        "World": [("BBC", BBC.format("science_and_environment")), ("The Guardian", GUA.format("science")), ("DW", "https://rss.dw.com/rdf/rss-en-all")],
+        "US": [("The New York Times", NYT + "Science.xml"), ("NPR", NPR.format(1007)), ("CBS News", CBS.format("science")), ("ScienceDaily", "https://www.sciencedaily.com/rss/top/science.xml"), ("Science News", "https://www.sciencenews.org/feed"), ("Scientific American", "https://www.scientificamerican.com/platform/syndication/rss/")],
+        "World": [("BBC", BBC.format("science_and_environment")), ("The Guardian", GUA.format("science")), ("DW", "https://rss.dw.com/rdf/rss-en-all"), ("Phys.org", "https://phys.org/rss-feed/"), ("Nature", "https://www.nature.com/nature.rss")],
         "Brazil": [("g1", G1.format("ciencia")), ("Folha de S.Paulo", FOLHA.format("ciencia")), ("Jornal da USP", "https://jornal.usp.br/feed/"), ("Pesquisa FAPESP", "https://revistapesquisa.fapesp.br/feed/")],
     }),
     "health": ("Health", {
@@ -132,7 +132,17 @@ CANDIDATOS = [
     ("Nature news", "https://www.nature.com/nature.rss"),
     ("Science News", "https://www.sciencenews.org/feed"),
     ("Scientific American", "https://www.scientificamerican.com/platform/syndication/rss/"),
+    ("STAT News", "https://www.statnews.com/feed/"),
+    ("Medical Xpress", "https://medicalxpress.com/rss-feed/"),
+    ("NIH", "https://www.nih.gov/news-events/news-releases/feed.xml"),
+    ("Harvard Health", "https://www.health.harvard.edu/blog/feed"),
+    ("NPR saúde 2", "https://feeds.npr.org/103537970/rss.xml"),
     ("AP top", "https://apnews.com/index.rss"),
+    ("Rolling Stone", "https://www.rollingstone.com/feed/"),
+    ("Pitchfork", "https://pitchfork.com/feed/feed-news/rss"),
+    ("AV Club", "https://www.avclub.com/rss"),
+    ("Deadline", "https://deadline.com/feed/"),
+    ("NPR cultura 2", "https://feeds.npr.org/1047/rss.xml"),
 ]
 # Todos os veículos (na nota, nenhum nome de veículo aparece no texto).
 VEICULOS = {f[0] for _, regioes in TEMAS.values() for feeds in regioes.values() for f in feeds} | {"Fox News", "Reuters", "AP", "Associated Press", "CNN", "BBC"}
