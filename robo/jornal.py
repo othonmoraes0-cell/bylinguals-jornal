@@ -94,7 +94,7 @@ TEMAS = {
     }),
     "sports": ("Sports", {
         "US": [("The New York Times", NYT + "Soccer.xml"), ("CBS Sports", "https://www.cbssports.com/rss/headlines/"), ("Fox News", FOX.format("sports"))],
-        "World": [("BBC", "https://feeds.bbci.co.uk/sport/rss.xml"), ("The Guardian", GUA.format("sport")), ("Agência Brasil", "https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml", "/esportes/")],
+        "World": [("BBC", "https://feeds.bbci.co.uk/sport/rss.xml"), ("The Guardian", GUA.format("sport")), ("Sky Sports", "https://www.skysports.com/rss/12040")],
         "Brazil": [("ge", "https://ge.globo.com/rss/ge/"), ("Folha de S.Paulo", FOLHA.format("esporte")), ("CNN Brasil", CNNBR, "/esportes/"), ("Estadão", ESTADAO, "/esportes/")],
     }),
     "culture": ("Culture", {
@@ -104,7 +104,7 @@ TEMAS = {
     }),
     "space": ("Space & Earth", {
         "US": [("NASA", NASA), ("The New York Times", NYT + "Space.xml"), ("The New York Times", NYT + "Climate.xml"), ("NPR", NPR.format(1025))],
-        "World": [("ESA", "https://www.esa.int/rssfeed/Our_Activities/Space_News"), ("The Guardian", GUA.format("environment")), ("BBC", BBC.format("science_and_environment")), ("Agência Brasil", "https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml", "/geral/")],
+        "World": [("ESA", "https://www.esa.int/rssfeed/Our_Activities/Space_News"), ("The Guardian", GUA.format("environment")), ("BBC", BBC.format("science_and_environment")), ("Phys.org", "https://phys.org/rss-feed/space-news/")],
         "Brazil": [("g1", G1.format("natureza")), ("Folha de S.Paulo", FOLHA.format("ambiente")), ("g1", G1.format("ciencia")), ("Jornal da USP", "https://jornal.usp.br/feed/")],
     }),
     "entertainment": ("Entertainment & Curiosities", {
@@ -778,7 +778,7 @@ def planejar():
             for it in notas[:POR_REGIAO]:
                 escolhidos.append(it)
                 links_usados.add(it["link"])
-            plano[chave][regiao] = {"grupos": grupos, "notas": notas, "nasa": any(url == NASA for _, url in regioes[regiao])}
+            plano[chave][regiao] = {"grupos": grupos, "notas": notas, "nasa": any(f[1] == NASA for f in regioes[regiao])}
     return plano
 
 
