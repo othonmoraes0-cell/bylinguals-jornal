@@ -1,50 +1,52 @@
 # Health — 2026-10-10
 
-8 notícias · 5 descartadas
+9 notícias · 2 descartadas
 
-## [US · NOTA] Engel sues Novo Nordisk over Ozempic eye damage
-Doctors listed causes of NAION, did not mention Ozempic. Study in JAMA Ophthalmology linked Ozempic to higher NAION rates. More than one in 10 Americans use GLP-1 drugs for weight loss. American Academy of Ophthalmology and North American Neuro-Ophthalmology Society say study does not prove causation. They advise patients to continue taking GLP-1 drugs.
+## [US · NOTA] JAMA Study Finds Higher NAION Rates Among Ozempic Users, FDA Tracks
+JAMA Ophthalmology later found higher NAION rates among Ozempic users. Two medical groups say JAMA study does not prove causation. More than one in ten Americans use GLP-1 drugs for weight loss now. The FDA database tracks adverse events linked to pharmaceuticals. Further research is needed to confirm if GLP-1 drugs cause NAION.
 
 Fontes: NPR
 
-## [US · NOTA] Contraception stigma and cuts limit access for African girls
-Kelly became pregnant at 16 and had to drop out of school. Now, she cares for her 18-month-old child and seeks contraception discreetly. Kelly aims to return to school, saying more babies mean less time for education. Aid cuts and global shipping disruptions threaten contraception access in Africa. Parental opposition, restrictive policies, and fear of being seen at clinics hinder access. Contraception is crucial for helping adolescent girls avoid unintended pregnancies. A mobile clinic in Epworth provides contraceptives to over 100,000 adolescents since 2021.
+## [US · NOTA] Weight-loss drug Mounjaro cut impulsive spending in US study
+Researchers at Wharton School study GLP-1 drugs' impact on financial decisions. The study will examine how GLP-1 drugs affect the brain's reward system. The first task involves passive viewing of products and spending opportunities. The second task requires participants to choose between immediate and future rewards. Participants must follow through on one of their decisions to ensure honesty. Results could help people develop better spending and saving habits.
+
+Fontes: CBS News
+
+## [US · NOTA] Contraception Stigma and Aid Cuts Affect Zimbabwean Girls
+Contraception is hard to access due to stigma and funding cuts. Mobile clinics provide contraception to adolescents in Zimbabwe. These clinics have served over 100,000 adolescents since 2021. Zimbabwe has spent millions buying contraceptives since 2022. Global shipping disruptions delay contraceptive shipments in Africa.
 
 Fontes: ABC News
 
-## [US · NOTA] Greater REM sleep linked to lower disease risks in study
-A study found more REM sleep is associated with lower risks of many diseases. Greater REM sleep was linked to lower risks of dementia and Parkinson's. Six to eight hours of sleep per night was found to be ideal for health. Less than five hours of sleep per night increased risks of 37 conditions. The study could not prove that more REM sleep prevents disease directly.
-
-Fontes: Fox News
-
 ## [World · NOTA] Autism and ADHD review warns of over-diagnosis risks
-A review on autism and ADHD warns of over-diagnosis risks for young people. The review was commissioned by the former health secretary Wes Streeting. It found that diagnoses of ADHD and autism are increasing faster than expected. He links mental distress increase to economic uncertainty and social media. Anxiety, depression, self-harm, and eating disorders are driving this trend. The review warns diagnosis can limit young people's opportunities.
+A review on autism and ADHD warns of over-diagnosis risks for young people. The review was commissioned by the former health secretary Wes Streeting. Experts found that diagnoses for ADHD and autism have increased. However, experts estimate the true level of autism is 1-2%. The review warns that diagnosis can sometimes close doors to opportunities.
 
 Fontes: BBC
 
-## [World · NOTA] FDA may allow toxic chemicals in food without safety review
-The FDA is proposing to expand a loophole for toxic chemicals in food. This would let companies add chemicals directly to food as ingredients. Chemicals like perchlorate, phthalates, and bisphenols could be used. These chemicals can cause harm at levels far below 0.5 parts per billion. The FDA did not respond to requests for comment on this issue. Campaigners say this could lead to more toxic chemicals in grocery stores.
+## [World · NOTA] FDA may allow toxic chemicals in food without safety checks
+The FDA is proposing to expand a loophole allowing toxic chemicals in food without review. The new proposal would allow chemicals as ingredients, flavorings, preservatives, and more. But the proposed rule includes the expansion of the TOR exemption, alarming advocates. The FDA's position is that small amounts of chemicals are not problematic, but science disagrees. Chemicals like perchlorate, phthalates, bisphenols, and Pfas could be used as TOR ingredients.
 
 Fontes: The Guardian
 
-## [World · NOTA] WHO Director-General visits Jordan to discuss health system support
-Dr Tedros Adhanom Ghebreyesus visited Jordan for two days to discuss health issues. He met King Abdullah II to talk about health system improvements. He visited a hospital treating children evacuated from Gaza. Tedros held a meeting with health partners and donors. Jordan has shown leadership in integrating mental health into primary care. The Duke and Duchess of Sussex joined some of the visits. Prince Harry highlighted the importance of mental health investment.
+## [World · NOTA] WHO Director-General visits Jordan to discuss health and humanitarian aid
+Dr Tedros visited Jordan to meet King Abdullah II and discuss health issues. He visited a hospital treating children from Gaza and met health workers there. Tedros held a meeting with health partners and donors to discuss funding. Jordan is leading in primary health care and integrating mental health services. Prince Harry and Meghan visited as founders of Archewell Philanthropies.
 
 Fontes: WHO
 
-## [Brazil · COMPLETA] Kenya's First Ebola Case and Death Confirmed
-Kenya confirmed its first Ebola case and death on October 6, 2026. He traveled by land to Uganda and then flew to Nairobi. He showed symptoms of fever, chills, and bleeding under the skin. Health officials placed 28 contacts under observation, including family members. The patient died at Nairobi Hospital after being isolated. The patient's relatives took him to the hospital after landing. No other contacts have tested positive for Ebola so far. Kenya has been on high alert since the outbreak began in May. Uganda previously had 20 cases and two deaths before declaring itself free.
+## [Brazil · NOTA] Mary's social anxiety worsened during university
+Mary developed social anxiety during high school and it worsened in university. She avoided social gatherings and struggled to make friends. A UK study found over 20% of university students suffer from social anxiety. Mary felt isolated and feared not fitting in at university clubs. She experienced physical symptoms like hot flushes and trembling hands. Social anxiety becomes problematic when it hinders daily activities. Mary's story highlights the impact of social anxiety on university life.
 
-Fontes: g1, Folha de S.Paulo, CNN Brasil
+Fontes: Folha de S.Paulo
 
-## [Brazil · NOTA] 58% of Brazilians see mental health as top health concern
-A survey by Ipsos shows mental health is the main health worry for 58% of Brazilians. The Ipsos Health Service Report 2026 was conducted online from July 13 to August 7, 2026. Stress, drug abuse, obesity, alcohol abuse, diabetes, and heart disease are other concerns. Women are more worried about mental health than men, with 68% compared to 47%. Globally, 48% of people now see mental health as a major health concern. In 2018, only 27% of people globally viewed mental health as a top issue. Stress affects daily life for 64% of people in 32 countries surveyed. Some people miss work or social events due to mental health issues.
+## [Brazil · NOTA] Study links long COVID to dopamine system changes
+Researchers found lower levels of a marker in dopamine nerve endings. The marker dropped by up to 20% in people with long COVID symptoms. Three brain regions showed reduced dopamine marker levels. The ventral striatum, linked to motivation, had a 20% drop. The dorsal putamen, linked to movement, had a 16% drop. The dorsal caudate, linked to memory, had a 17% drop. Lower levels were linked to symptoms like fatigue and memory loss. The study compared brain scans of 24 adults with long COVID. Further research is needed to confirm these findings.
+
+Fontes: g1
+
+## [Brazil · NOTA] Testosterone gains popularity among menopausal women
+Testosterone is increasingly used by menopausal women to relieve symptoms. Testosterone is traditionally seen as a male hormone but women produce it too. Measuring testosterone levels in women is challenging due to low concentrations. Testosterone can improve sexual desire and satisfaction in some postmenopausal women. Healthcare providers advise caution when prescribing testosterone to women.
 
 Fontes: Folha de S.Paulo
 
 ## Descartadas
-- [US] nota: Will We Ever Understand Dementia? (sobrou pouco depois da conferência (3 frases))
-- [US] nota: Can GLP-1 drugs help people stop throwing away their money? (sobrou pouco depois da conferência (4 frases))
-- [Brazil] nota: Testosterona ganha espaço na menopausa, mas uso em mulheres exige cautela (sobrou pouco depois da conferência (4 frases))
-- [Brazil] nota: 'Ciência Aberta': centro que abriga o Sirius recebe público para apresentar curiosidades e atrações da ciência (sobrou pouco depois da conferência (3 frases))
-- [Brazil] nota: Covid longa pode estar ligada a alterações no sistema de dopamina do cérebro, aponta estudo (sobrou pouco depois da conferência (4 frases))
+- [US] nota: Will We Ever Understand Dementia? (sobrou pouco depois da conferência (4 frases))
+- [Brazil] nota: 'Ciência Aberta': centro que abriga o Sirius recebe público para apresentar curiosidades e atrações da ciência (sobrou pouco depois da conferência (4 frases))
