@@ -379,6 +379,33 @@ MIN_COMPLETA = 9
 MAX_NOTA = 10
 
 
+def manchete_bate(manchete, frases):
+    """A conferência de fatos pode derrubar justamente a frase do título — e sobra uma manchete que promete o que o
+    texto não entrega (teste seco de 10/10/2026: "Engel sues Novo Nordisk over Ozempic eye damage" num texto que não
+    falava do processo). Aqui se exige que metade das palavras de conteúdo do título apareça no texto."""
+    texto = " ".join(frases).lower()
+    palavras = [w for w in re.findall(r"[A-Za-z][A-Za-z'-]{3,}", manchete) if w not in COMUNS and w.lower() not in {"with", "from", "that", "this", "says", "said", "after", "over", "into", "more", "than", "could", "about"}]
+    if not palavras:
+        return True
+    dentro = sum(1 for w in palavras if w.lower() in texto)
+    return dentro * 2 >= len(palavras)
+
+
+def manchete_do_texto(frases):
+    """Reescreve o título a partir das frases que sobraram."""
+    pedido = (
+        "STORY:\n" + " ".join(frases) + "\n\n"
+        "Write ONE headline in English (max 14 words) for this story. It must say WHAT happened and TO WHOM or TO WHAT, "
+        "using the specific names that appear in the story. Never promise anything the story does not say. "
+        'Return JSON: {"headline": "..."}'
+    )
+    try:
+        d = ia([{"role": "system", "content": "You are a news editor. You only answer with JSON."}, {"role": "user", "content": pedido}], max_tokens=80, temperatura=0.2)
+    except Exception:  # noqa: BLE001
+        return ""
+    return str(d.get("headline") or "").strip()[:160]
+
+
 def produzir(fatos, n_real, nota=False, veiculos=()):
     base = NOTA_PEDIDO if nota else "\nNever comment on what the news shows or means."
     extra = base
@@ -423,9 +450,15 @@ def produzir(fatos, n_real, nota=False, veiculos=()):
         if isinstance(g, dict) and g.get("word") and g.get("pt") and str(g["word"]).lower() in texto_real and len(glossario) < 10:
             if not any(x["termo"].lower() == str(g["word"]).lower() for x in glossario):
                 glossario.append({"termo": str(g["word"]).strip()[:60], "traducao": str(g["pt"]).strip()[:120]})
+    manchete = str(d.get("headline") or "").strip()[:160]
+    if manchete and not manchete_bate(manchete, real):
+        nova = manchete_do_texto(real)
+        print(f"    manchete não batia com o texto: '{manchete}' → '{nova}'", flush=True)
+        if nova:
+            manchete = nova
     return {
         "tipo": "NOTA" if nota else "COMPLETA",
-        "manchete": str(d.get("headline") or "").strip()[:160],
+        "manchete": manchete,
         "real": real[:MAX_NOTA] if nota else real[:20],
         "glossario": glossario,
         "perguntas": gerar_perguntas(real, 3),
@@ -701,10 +734,22 @@ def escrever_noticia(g, nota):
         n_real = 10 if palavras >= 120 else 8
     else:
         n_real = 16 if g.get("nasa") or palavras >= 400 else (14 if palavras >= 180 else 11)
+    veiculos = {f["veiculo"] for f in g["fontes"]} | VEICULOS
     try:
-        n, motivo = produzir(fatos, n_real, nota=nota, veiculos={f["veiculo"] for f in g["fontes"]} | VEICULOS)
+        n, motivo = produzir(fatos, n_real, nota=nota, veiculos=veiculos)
     except Exception as e:  # noqa: BLE001
         n, motivo = None, f"erro: {e}"
+    # Sobrou pouco? Antes de desistir, tenta de novo com MAIS matéria (o teste seco de 10/10 perdeu 5 notícias de 13
+    # por falta de fato, não por invenção). Só vale para nota: a completa já lê quatro fontes.
+    if n is None and nota and motivo and motivo.startswith("sobrou pouco"):
+        maior = texto_da_materia(principal, 1200)
+        if maior and len(maior.split()) > palavras + 150:
+            fatos = f"FACTS:\n- {principal['veiculo']}: {principal['titulo']}. {maior}"
+            print(f"    {motivo}: tentando com {len(maior.split())} palavras da matéria", flush=True)
+            try:
+                n, motivo = produzir(fatos, 10, nota=True, veiculos=veiculos)
+            except Exception as e:  # noqa: BLE001
+                n, motivo = None, f"erro: {e}"
     if not n or not n["manchete"]:
         return None, motivo or "sem manchete"
     n["fontes"] = [{"veiculo": f["veiculo"], "titulo": f["titulo"][:300], "link": f["link"]} for f in g["fontes"]]
@@ -730,7 +775,9 @@ ELEICAO = re.compile(
 DE_FORA = re.compile(
     r"\b(trump|biden|eua|estados unidos|washington|casa branca|israel|gaza|hamas|ucr[âa]ni|r[úu]ssia|putin|china|chin[êe]s|xi jinping|"
     r"jap[ãa]o|[íi]ndia|europa|uni[ãa]o europeia|reino unido|londres|fran[çc]a|alemanha|ir[ãa]\b|venezuela|maduro|argentin|milei|"
-    r"m[ée]xico|canad[áa]|vaticano|papa le[ãa]o|otan|onu)",
+    r"m[ée]xico|canad[áa]|vaticano|papa le[ãa]o|otan|onu|qu[êe]nia|uganda|nig[ée]ria|eti[óo]pia|[áa]frica do sul|congo|sud[ãa]o|"
+    r"quenian|ugandes|coreia|austr[áa]lia|indon[ée]sia|paquist[ãa]o|turquia|eg[íi]to|ar[áa]bia|emirados|catar|afeganist[ãa]o|"
+    r"col[ôo]mbia|peru\b|chile|bol[íi]via|uruguai|paraguai|equador|cuba|haiti)",
     re.I,
 )
 DO_BRASIL = re.compile(
