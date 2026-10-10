@@ -1,6 +1,6 @@
 # Feeds do Jornal
 
-**Feeds:** 94 conferidos, 0 sem nenhum item.
+**Feeds:** 98 conferidos, 0 sem nenhum item.
 
 ### Candidatos (ainda fora da edição)
   - **Reuters world** — vazio (0 itens): `https://www.reuters.com/arc/outboundfeeds/rss/category/world/?outputType=xml`
@@ -14,19 +14,29 @@
   - **Nature news** — OK (75 itens): `https://www.nature.com/nature.rss`
   - **Science News** — OK (20 itens): `https://www.sciencenews.org/feed`
   - **Scientific American** — OK (50 itens): `https://www.scientificamerican.com/platform/syndication/rss/`
+  - **STAT News** — OK (20 itens): `https://www.statnews.com/feed/`
+  - **Medical Xpress** — OK (30 itens): `https://medicalxpress.com/rss-feed/`
+  - **NIH** — vazio (0 itens): `https://www.nih.gov/news-events/news-releases/feed.xml`
+  - **Harvard Health** — vazio (0 itens): `https://www.health.harvard.edu/blog/feed`
+  - **NPR saúde 2** — OK (10 itens): `https://feeds.npr.org/103537970/rss.xml`
   - **AP top** — vazio (0 itens): `https://apnews.com/index.rss`
+  - **Rolling Stone** — OK (10 itens): `https://www.rollingstone.com/feed/`
+  - **Pitchfork** — OK (30 itens): `https://pitchfork.com/feed/feed-news/rss`
+  - **AV Club** — vazio (0 itens): `https://www.avclub.com/rss`
+  - **Deadline** — OK (12 itens): `https://deadline.com/feed/`
+  - **NPR cultura 2** — OK (10 itens): `https://feeds.npr.org/1047/rss.xml`
 
 - **Politics & Elections · US**: 3 completas, 0 notas
   - COMPLETA (NPR, CBS News, The New York Times, Fox News): U.S. imposes sweeping sanctions on International Criminal Court
+  - COMPLETA (The New York Times, ABC News, Fox News): After Christa Pike’s Botched Execution, Tennessee’s Lethal Injection Protocol Draws Scrutiny
   - COMPLETA (Fox News, The New York Times, CBS News): Veteran shot 7 times in Fort Hood massacre has a warning for Americans planning to watch execution
-  - COMPLETA (ABC News, Fox News, The New York Times): Trump interrupted by protesters as he fights to rally Texas voters
-- **Politics & Elections · World**: 2 completas, 1 notas
+- **Politics & Elections · World**: 3 completas, 0 notas
   - COMPLETA (Al Jazeera, France 24, The New York Times): Abbas postpones Palestinian legislative elections to September 2027
   - COMPLETA (The New York Times, DW, BBC): Paintings Stolen From Renoir Museum Are Recovered, Authorities Say
-  - NOTA (The Guardian): Controversial vaccine trial touted by RFK Jr gets go-ahead in Guinea-Bissau
+  - COMPLETA (The Guardian, BBC, Phys.org): Two dead as Isaias weakens to post-tropical cyclone after striking Florida panhandle
 - **Politics & Elections · Brazil**: 3 completas, 0 notas
-  - COMPLETA (g1, Poder360, InfoMoney): Justiça italiana marca para o fim de outubro novo julgamento sobre extradição de Zambelli
   - COMPLETA (BBC News Brasil, Folha de S.Paulo, g1, Exame): Como Jair Bolsonaro quase conseguiu em 2022 a virada que Lula almeja no 2º turno
+  - COMPLETA (g1, Poder360, InfoMoney): Justiça italiana marca para o fim de outubro novo julgamento sobre extradição de Zambelli
   - COMPLETA (g1, Folha de S.Paulo, CNN Brasil): Datafolha: viagem, saúde, desinteresse e trabalho são os principais motivos do eleitor para não votar no 1º tu
 - **Economy & Personal Finance · US**: 1 completas, 2 notas
   - COMPLETA (The New York Times, NPR, CBS News): Hiring Slows as U.S. Jobs Report Shows Labor Market Shifting Into Lower Gear
@@ -37,33 +47,33 @@
   - NOTA (DW): Finland, the world's happiest nation, faces a glum winter
   - NOTA (DW): How a multibillion-dollar oilfield has ignited the UK-Argentina feud over the Falklands
 - **Economy & Personal Finance · Brazil**: 0 completas, 3 notas
-  - NOTA (InfoMoney): É falso vídeo que diz que diarista e manicure terão que abrir CNPJ e emitir NF
   - NOTA (Folha de S.Paulo): Iates maiores e 'abrasileirados' são aposta do setor náutico para manter vendas com juro alto
   - NOTA (g1): Tarifaço dos EUA já afeta empresas; entenda quando os efeitos podem chegar ao seu bolso
+  - NOTA (InfoMoney): É falso vídeo que diz que diarista e manicure terão que abrir CNPJ e emitir NF
 - **Business · US**: 2 completas, 1 notas
   - COMPLETA (CNBC, The New York Times, CBS News, Fox News): Trump Media advisor Katie Zacharia offered White House press secretary role
   - COMPLETA (The New York Times, ABC News, CNBC): Europe’s Trade Tensions With China Are Coming to a Head
   - NOTA (The New York Times): What’s Dragging Down A.I. Efficiency? The ‘Verification Tax.’
 - **Business · World**: 0 completas, 3 notas
   - NOTA (BBC): Rogue Anthropic AI agent gave police fake tip in unsolved murder case
+  - NOTA (BBC): How drones are hunting fires hidden beneath the Cairngorms
   - NOTA (The Guardian): AI surveillance startup Flock to cut several hundred jobs amid backlash, sources say
-  - NOTA (BBC): Prize-winning image which sparked backlash was AI-generated, Nikon rules
 - **Business · Brazil**: 0 completas, 3 notas
-  - NOTA (Exame): Brasil tem 11 empresas no ranking de melhores empregadores de 2026; confira
+  - NOTA (Exame): Vinhedo de brasileiro na Argentina vira condomínio com lotes de até US$ 150 mil
   - NOTA (g1): Faculdade sem diploma? Gigante do Vale do Silício cria escola para desafiar universidades tradicionais
-  - NOTA (g1): Grosseria tem limite até para a IA: Anthropic quer barrar abusos e autoriza Claude a encerrar conversas
-- **Science · US**: 2 completas, 1 notas
+  - NOTA (Exame): Brasil tem 11 empresas no ranking de melhores empregadores de 2026; confira
+- **Science · US**: 3 completas, 0 notas
+  - COMPLETA (NPR, The New York Times, Scientific American): Scientists win chemistry Nobel for discoveries about mirrored molecules that led to many drugs
   - COMPLETA (The New York Times, CBS News, ABC News): A Lab Worker’s Death Is Raising Plague Fears in Russia. What Do Experts Want to Know?
-  - COMPLETA (The New York Times, NPR, Smithsonian): Jonathan the Giant Tortoise Is 194 Years Old. He Just Had His Genome Sequenced.
-  - NOTA (The New York Times): Mathematician Who Waited 50 Years for Proper Credit for Her Work Has Died
+  - COMPLETA (The New York Times, NPR, Scientific American, Smithsonian): Jonathan the Giant Tortoise Is 194 Years Old. He Just Had His Genome Sequenced.
 - **Science · World**: 3 completas, 0 notas
   - COMPLETA (DW, BBC, Al Jazeera, France 24, The Guardian): Indian authorities crack down on 'Cockroach' protest in central Delhi. Follow live.
   - COMPLETA (DW, The Guardian, BBC): Mexico: Court finds three men guilty of murder of Australian, US surfers
   - COMPLETA (DW, The New York Times, BBC, The Guardian): UAE: Omani Flydubai co-pilot planned suicide attack
 - **Science · Brazil**: 0 completas, 3 notas
+  - NOTA (Folha de S.Paulo): Após anúncios da OpenAI, conheça os Problemas do Milênio da matemática em aberto
   - NOTA (Pesquisa FAPESP): O milagre da multiplicação de referências bibliográficas (fantasmas)
   - NOTA (g1): Incêndio na UFPE destruiu dados de 20 anos de pesquisa, dizem entidades científicas
-  - NOTA (Folha de S.Paulo): Neandertais utilizaram madeira para produzir armas e diversos utensílios domésticos
 - **Health · US**: 0 completas, 3 notas
   - NOTA (The New York Times): Will We Ever Understand Dementia?
   - NOTA (NPR): Ongoing lawsuits allege GLP-1s can cause serious harm. But we don't know how often
@@ -74,8 +84,8 @@
   - NOTA (WHO): WHO Director-General visits Jordan to recognize strong collaboration on health system delivery, emergency reli
 - **Health · Brazil**: 1 completas, 2 notas
   - COMPLETA (g1, Folha de S.Paulo, CNN Brasil): Quênia registra primeiro caso e primeira morte por ebola; paciente veio do Congo
+  - NOTA (Folha de S.Paulo): Testosterona ganha espaço na menopausa, mas uso em mulheres exige cautela
   - NOTA (g1): 'Ciência Aberta': centro que abriga o Sirius recebe público para apresentar curiosidades e atrações da ciência
-  - NOTA (g1): Covid longa pode estar ligada a alterações no sistema de dopamina do cérebro, aponta estudo
 - **Sports · US**: 0 completas, 3 notas
   - NOTA (The New York Times): Soccer Watchalongs Like Stretford Paddock Offer a Broadcast Alternative
   - NOTA (CBS Sports): UCLA vs. Oregon prediction, odds, time: Week 6 college football picks from proven model
@@ -85,29 +95,29 @@
   - COMPLETA (BBC, The Guardian, Al Jazeera, DW): I've got my own questions on Man City case - Carrick
   - NOTA (BBC): 'What this team has been crying out for' - Renshaw 190 lifts Australia
 - **Sports · Brazil**: 1 completas, 2 notas
-  - COMPLETA (Folha de S.Paulo, CNN Brasil, ge): Portugal vence Dinamarca, e Jesus evita falar sobre saída de Cristiano Ronaldo
-  - NOTA (ge): Entenda por que desempenho fora de casa liga alerta do Botafogo na reta final do Brasileiro
+  - COMPLETA (CNN Brasil, Folha de S.Paulo, Veja): Cristiano Ronaldo é suspenso pela federação portuguesa após deixar seleção
   - NOTA (Folha de S.Paulo): Bia Souza termina Mundial de Judô na sétima posição
+  - NOTA (ge): Em parceria com CBF e Conmebol, FMF conclui capacitação para profissionais das categorias de base
 - **Culture · US**: 0 completas, 3 notas
+  - NOTA (The New York Times): Deniz Goktas, Jailed in Turkey for a Joke, Delivers a Bold Defense in Court
   - NOTA (NPR): 16 cozy activities to add to your fall bucket list
   - NOTA (CBS News): Notable Deaths in 2026
-  - NOTA (The New York Times): His Unmarked Grave Lay Forgotten for 200 Years. They Had to Fix That.
 - **Culture · World**: 0 completas, 3 notas
   - NOTA (The Guardian): Stark warning – does new footage in Avengers: Endgame reveal the truth about Doctor Doom?
   - NOTA (The Guardian): ‘People forgot I existed’: Audrey Niffenegger on taking 14 years to write a sequel to The Time Traveler’s Wife
-  - NOTA (DW): 2026 Nobel Prize winner Anne Carson: Where to start reading
+  - NOTA (BBC): Ashe was too scared to cancel her wedding - the story became a hit song
 - **Culture · Brazil**: 0 completas, 3 notas
-  - NOTA (g1): Saiba como Giulia Be conheceu o herdeiro da família Kennedy
   - NOTA (Folha de S.Paulo): Musical de 'Percy Jackson', em São Paulo, preserva o livro ante a fúria dos fãs
   - NOTA (CNN Brasil): Dubdogz apostam em festas próprias e ampliam negócios na música eletrônica
-- **Space & Earth · US**: 1 completas, 2 notas
+  - NOTA (Folha de S.Paulo): Natureza, corpos nus e Tarsila se encontram em exposições em São Paulo
+- **Space & Earth · US**: 2 completas, 1 notas
+  - COMPLETA (NPR, Scientific American, ABC News): Isaias pummels the Gulf Coast, and plows through Alabama
   - COMPLETA (The New York Times, CBS News, CNBC, NPR): Trump Says He Will Import Russian Diesel Fuel Amid High Prices
   - NOTA (The New York Times): SpaceX’s Starship Makes It to Orbit for the First Time, but Returns to Earth Early
-  - NOTA (The New York Times): As Flood Risk Increases in Himalayas, Nepal Builds More in Vulnerable Areas
-- **Space & Earth · World**: 2 completas, 1 notas
-  - COMPLETA (BBC, The Guardian, DW): Hurricane Isaias strengthens to a major category three storm
+- **Space & Earth · World**: 1 completas, 2 notas
   - COMPLETA (Phys.org, BBC, The Guardian): Margaret Hamilton, who led a software team for NASA's Apollo program, dies at 90
   - NOTA (The Guardian): As monarch butterflies migrate for the fall, meet the Chicago woman trying to protect them
+  - NOTA (BBC): Hundreds protest over data centre plans
 - **Space & Earth · Brazil**: 0 completas, 3 notas
   - NOTA (g1): Centenária árvore de Florianópolis citada no hino do município não é originária do Brasil, diz pesquisa
   - NOTA (g1): Uma das nuvens mais estranhas de Marte pode ser ainda mais incomum do que se pensava
@@ -123,4 +133,4 @@
 - **Entertainment & Curiosities · Brazil**: 1 completas, 2 notas
   - COMPLETA (Folha de S.Paulo, CNN Brasil, g1): Volta da TV Globinho repercute nas redes, mas quase perde para Record na audiência
   - NOTA (Veja): EON vende 1 milhão de tokens e monta operação global em torno de esmeralda de US$ 650 mi
-  - NOTA (Veja): Morre ‘Juarez da TekPix’, apresentador que conquistou o público com bordões marcantes ao vender produtos na TV
+  - NOTA (Folha de S.Paulo): Babu Santana volta às novelas após três anos e entra em 'Por Você' como enfermeiro
