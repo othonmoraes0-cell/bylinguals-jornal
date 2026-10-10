@@ -3,7 +3,7 @@ The Bylinguals Daily — a edição do dia do Jornal do Club (09/10/2026; ver MA
 
 Desde 09/10/2026 (tarde): 9 TEMAS, e em cada tema 3 notícias dos Estados Unidos, 3 do mundo e 3 do Brasil. Cada tema roda
 num robô separado, em paralelo (variável TEMA). A notícia COMPLETA só sai quando 3 ou mais veículos noticiaram o assunto
-(ou é da NASA); o resto da vaga vira NOTA curta (2 a 3 frases) de um veículo só, com a mesma conferência.
+(ou é da NASA); o resto da vaga vira NOTA (5 a 10 frases) de um veículo só, com a mesma conferência.
 
 Roda grátis no GitHub Actions, com um modelo de IA aberto (Qwen2.5 14B, llama.cpp no processador):
  1. Lê os feeds. Fonte principal: The New York Times (seções) e CNN Brasil. Apoio: BBC, Guardian, DW, NPR e g1.
@@ -12,7 +12,7 @@ Roda grátis no GitHub Actions, com um modelo de IA aberto (Qwen2.5 14B, llama.c
     NASA (domínio público): a matéria inteira e a foto.
  2. Junta o mesmo assunto em vários veículos. Só entra notícia com 3 ou mais veículos (ou da NASA): com menos fatos a IA
     "completa" com o que não existe (piloto de 09/10/2026).
- 3. Escreve do zero, em dois níveis (Everyday English e Real Conversations), com o número de frases que os fatos sustentam.
+ 3. Escreve do zero um RESUMO da matéria (Real Conversations, nível B1), com o número de frases que os fatos sustentam.
  4. Confere cada frase contra os fatos: a que não tem base sai. Se sobrar pouco, a notícia não entra.
  5. Traduz cada frase para o português (OPUS-MT) e entrega ao Portal (token OIDC do GitHub, sem senha).
 """
@@ -56,38 +56,42 @@ FOX = "https://moxie.foxnews.com/google-publisher/{}.xml"
 ABC = "https://abcnews.go.com/abcnews/{}"
 CNNBR = "https://www.cnnbrasil.com.br/{}/feed/"
 NASA = "https://www.nasa.gov/news-release/feed/"
+# Reuters (10/10/2026, pedido do usuário: "podemos coletar informações da Reuters, é uma ótima fonte"). A Reuters não
+# publica mais os feeds antigos de reuters.com; o que resta são os da Reuters Agency. Se um deles não responder, o robô
+# simplesmente segue sem ele — o modo SO_FEEDS mostra quantos itens cada feed trouxe.
+REUTERS = "https://www.reutersagency.com/feed/?best-topics={}&post_type=best"
 
 # Fontes por tema e região: (veículo, feed). Do jornal saem só os fatos (texto reescrito). Veículos dos dois lados do espectro
 # político nos EUA (NYT, NPR, CBS, ABC e Fox) e várias redações no Brasil, para a notícia completa ter 3+ olhares.
 TEMAS = {
     "politics": ("Politics & Elections", {
         "US": [("The New York Times", NYT + "Politics.xml"), ("NPR", NPR.format(1014)), ("CBS News", CBS.format("politics")), ("Fox News", FOX.format("politics")), ("ABC News", ABC.format("politicsheadlines"))],
-        "World": [("The New York Times", NYT + "World.xml"), ("BBC", BBC.format("world")), ("The Guardian", GUA.format("world")), ("DW", "https://rss.dw.com/rdf/rss-en-all"), ("Al Jazeera", "https://www.aljazeera.com/xml/rss/all.xml"), ("France 24", "https://www.france24.com/en/rss")],
+        "World": [("The New York Times", NYT + "World.xml"), ("Reuters", REUTERS.format("political-general")), ("BBC", BBC.format("world")), ("The Guardian", GUA.format("world")), ("DW", "https://rss.dw.com/rdf/rss-en-all"), ("Al Jazeera", "https://www.aljazeera.com/xml/rss/all.xml"), ("France 24", "https://www.france24.com/en/rss")],
         "Brazil": [("g1", G1.format("politica")), ("Folha de S.Paulo", FOLHA.format("poder")), ("CNN Brasil", CNNBR.format("politica")), ("Poder360", "https://www.poder360.com.br/feed/"), ("BBC News Brasil", "https://feeds.bbci.co.uk/portuguese/rss.xml")],
     }),
     "economy": ("Economy & Personal Finance", {
-        "US": [("The New York Times", NYT + "Economy.xml"), ("The New York Times", NYT + "YourMoney.xml"), ("NPR", NPR.format(1017)), ("CNBC", "https://www.cnbc.com/id/21324812/device/rss/rss.html"), ("CBS News", CBS.format("moneywatch"))],
-        "World": [("BBC", BBC.format("business")), ("The Guardian", GUA.format("business/economics")), ("DW", "https://rss.dw.com/rdf/rss-en-bus")],
+        "US": [("The New York Times", NYT + "Economy.xml"), ("The New York Times", NYT + "YourMoney.xml"), ("Reuters", REUTERS.format("business-finance")), ("NPR", NPR.format(1017)), ("CNBC", "https://www.cnbc.com/id/21324812/device/rss/rss.html"), ("CBS News", CBS.format("moneywatch"))],
+        "World": [("Reuters", REUTERS.format("business-finance")), ("BBC", BBC.format("business")), ("The Guardian", GUA.format("business/economics")), ("DW", "https://rss.dw.com/rdf/rss-en-bus")],
         "Brazil": [("g1", G1.format("economia")), ("InfoMoney", "https://www.infomoney.com.br/economia/feed/"), ("InfoMoney", "https://www.infomoney.com.br/minhas-financas/feed/"), ("Folha de S.Paulo", FOLHA.format("mercado")), ("CNN Brasil", CNNBR.format("economia"))],
     }),
     "business": ("Business", {
         "US": [("The New York Times", NYT + "Business.xml"), ("NPR", NPR.format(1006)), ("CNBC", "https://www.cnbc.com/id/100003114/device/rss/rss.html"), ("ABC News", ABC.format("moneyheadlines")), ("The New York Times", NYT + "Technology.xml")],
-        "World": [("The Guardian", GUA.format("business")), ("BBC", BBC.format("technology")), ("DW", "https://rss.dw.com/rdf/rss-en-bus"), ("BBC", BBC.format("business"))],
+        "World": [("Reuters", REUTERS.format("tech")), ("The Guardian", GUA.format("business")), ("BBC", BBC.format("technology")), ("DW", "https://rss.dw.com/rdf/rss-en-bus"), ("BBC", BBC.format("business"))],
         "Brazil": [("Exame", "https://exame.com/feed/"), ("g1", G1.format("tecnologia")), ("CNN Brasil", CNNBR.format("economia/negocios")), ("Folha de S.Paulo", FOLHA.format("mercado"))],
     }),
     "science": ("Science", {
         "US": [("The New York Times", NYT + "Science.xml"), ("NPR", NPR.format(1007)), ("CBS News", CBS.format("science")), ("ScienceDaily", "https://www.sciencedaily.com/rss/top/science.xml")],
-        "World": [("BBC", BBC.format("science_and_environment")), ("The Guardian", GUA.format("science")), ("New Scientist", "https://www.newscientist.com/feed/home/"), ("DW", "https://rss.dw.com/rdf/rss-en-sci")],
+        "World": [("Reuters", REUTERS.format("science")), ("BBC", BBC.format("science_and_environment")), ("The Guardian", GUA.format("science")), ("New Scientist", "https://www.newscientist.com/feed/home/"), ("DW", "https://rss.dw.com/rdf/rss-en-sci")],
         "Brazil": [("g1", G1.format("ciencia")), ("Folha de S.Paulo", FOLHA.format("ciencia")), ("Jornal da USP", "https://jornal.usp.br/feed/"), ("Pesquisa FAPESP", "https://revistapesquisa.fapesp.br/feed/")],
     }),
     "health": ("Health", {
         "US": [("The New York Times", NYT + "Health.xml"), ("NPR", NPR.format(1128)), ("CBS News", CBS.format("health")), ("ABC News", ABC.format("healthheadlines")), ("Fox News", FOX.format("health"))],
-        "World": [("BBC", BBC.format("health")), ("The Guardian", GUA.format("society/health")), ("WHO", "https://www.who.int/rss-feeds/news-english.xml")],
+        "World": [("Reuters", REUTERS.format("health")), ("BBC", BBC.format("health")), ("The Guardian", GUA.format("society/health")), ("WHO", "https://www.who.int/rss-feeds/news-english.xml")],
         "Brazil": [("g1", G1.format("saude")), ("Folha de S.Paulo", FOLHA.format("equilibrioesaude")), ("CNN Brasil", CNNBR.format("saude")), ("g1", G1.format("ciencia-e-saude"))],
     }),
     "sports": ("Sports", {
         "US": [("The New York Times", NYT + "Sports.xml"), ("ESPN", "https://www.espn.com/espn/rss/news"), ("CBS Sports", "https://www.cbssports.com/rss/headlines/"), ("Fox News", FOX.format("sports"))],
-        "World": [("BBC", "https://feeds.bbci.co.uk/sport/rss.xml"), ("The Guardian", GUA.format("sport")), ("ESPN", "https://www.espn.com/espn/rss/soccer/news")],
+        "World": [("Reuters", REUTERS.format("sports")), ("BBC", "https://feeds.bbci.co.uk/sport/rss.xml"), ("The Guardian", GUA.format("sport")), ("ESPN", "https://www.espn.com/espn/rss/soccer/news")],
         "Brazil": [("ge", "https://ge.globo.com/rss/ge/"), ("Folha de S.Paulo", FOLHA.format("esporte")), ("CNN Brasil", CNNBR.format("esportes")), ("UOL", "https://rss.uol.com.br/feed/esporte.xml")],
     }),
     "culture": ("Culture", {
@@ -97,7 +101,7 @@ TEMAS = {
     }),
     "space": ("Space & Earth", {
         "US": [("NASA", NASA), ("The New York Times", NYT + "Space.xml"), ("The New York Times", NYT + "Climate.xml"), ("Space.com", "https://www.space.com/feeds/all"), ("NPR", NPR.format(1025))],
-        "World": [("ESA", "https://www.esa.int/rssfeed/Our_Activities/Space_News"), ("The Guardian", GUA.format("environment")), ("BBC", BBC.format("science_and_environment")), ("Space.com", "https://www.space.com/feeds/all")],
+        "World": [("ESA", "https://www.esa.int/rssfeed/Our_Activities/Space_News"), ("Reuters", REUTERS.format("environment")), ("The Guardian", GUA.format("environment")), ("BBC", BBC.format("science_and_environment")), ("Space.com", "https://www.space.com/feeds/all")],
         "Brazil": [("g1", G1.format("natureza")), ("Folha de S.Paulo", FOLHA.format("ambiente")), ("g1", G1.format("ciencia")), ("Jornal da USP", "https://jornal.usp.br/feed/")],
     }),
     "entertainment": ("Entertainment & Curiosities", {
@@ -275,29 +279,36 @@ SISTEMA = (
     "You are a news editor at Bylinguals, an English school in Brazil. You write short news stories for adult Brazilian learners of English. "
     "Write ONLY in English. Use ONLY facts that appear in the FACTS below. Never add names, numbers, dates, places, quotes, reactions, feelings "
     "or consequences that are not in the FACTS. Background facts may only come from the BACKGROUND section. Write in your own words: never copy "
-    "a sentence from the FACTS. Strictly neutral and factual: no opinions, no judging adjectives, no speculation. If sources disagree, say what each source reports."
+    "a sentence from the FACTS. Strictly neutral and factual: no opinions, no judging adjectives, no speculation. If sources disagree, say what each source reports.\n"
+    "BE SPECIFIC. Keep the exact thing the story is about: the medicine, the company, the person, the law, the place, the team, the number. "
+    "NEVER replace a specific name with a general category word. Write 'GLP-1 weight-loss drugs such as Mounjaro', never just 'drugs'. "
+    "Write 'the Federal Reserve', never just 'the bank'. A sentence that could be about almost anything is a bad sentence: rewrite it with the name."
 )
 
 PORTUGUES = re.compile(r"\b(não|são|está|também|após|pessoas|governo|então|foram|ainda|segundo|disse)\b", re.I)
 
 
-def escrever(fatos, n_every, n_real, extra="", n_glossario=8):
+def escrever(fatos, n_real, extra="", n_glossario=8):
+    """Um nível só (10/10/2026, decisão do usuário): Real Conversations, o texto completo. O nível Everyday acabou —
+    era ele que transformava "GLP-1 drugs" em "drugs" e deixava a notícia vaga."""
     pedido = (
         f"{fatos}\n\nWrite a JSON object with exactly these keys:\n"
-        '- "headline_everyday": a short headline (max 10 words), simple English\n'
-        f'- "everyday_sentences": a list of EXACTLY {n_every} sentences for CEFR A2 learners. Each sentence is complete (subject + verb), 8 to 14 words, common words, simple present or simple past.\n'
-        '- "headline_real": a headline (max 12 words)\n'
-        f'- "real_sentences": a list of EXACTLY {n_real} sentences for CEFR B1 learners, natural English, 12 to 22 words each: the main facts first, then what each source adds, then context from BACKGROUND (if any).\n'
-        f'- "glossary": a list of EXACTLY {n_glossario} objects {{"word": an English word or expression that appears in real_sentences, "pt": its meaning in Brazilian Portuguese}}\n'
+        '- "headline": a headline (max 14 words) saying WHAT happened and TO WHOM or TO WHAT, with the specific name in it. '
+        'A headline that could be about almost anything is wrong: "Drugs help people save money" is wrong; '
+        '"Weight-loss drug Mounjaro also cut impulsive spending in a US study" is right.\n'
+        f'- "sentences": a list of EXACTLY {n_real} sentences for CEFR B1 learners, natural English, 12 to 22 words each. '
+        "This is a SUMMARY OF THE STORY, not a headline stretched out: first what happened, then who said it and what each source adds, "
+        "then the numbers, then the context from BACKGROUND (if any), then what comes next. Every sentence must add something new.\n"
+        f'- "glossary": a list of EXACTLY {n_glossario} objects {{"word": an English word or expression that appears in the sentences, "pt": its meaning in Brazilian Portuguese}}\n'
         'Everything must be in English except the "pt" values. If a FACT is in Portuguese, translate it into English. Do not repeat a fact. '
-        f"If there are not enough facts for the number of sentences, write simpler sentences with the same facts: never invent. Return only the JSON.{extra}"
+        f"If there are not enough facts for the number of sentences, write fewer sentences: never invent and never pad. Return only the JSON.{extra}"
     )
     return ia([{"role": "system", "content": SISTEMA}, {"role": "user", "content": pedido}])
 
 
-def conferir_frases(fatos, every, real):
+def conferir_frases(fatos, real):
     """Segundo passo: cada frase tem base nos fatos? A que não tem sai."""
-    lista = [f"E{i + 1}: {f}" for i, f in enumerate(every)] + [f"R{i + 1}: {f}" for i, f in enumerate(real)]
+    lista = [f"R{i + 1}: {f}" for i, f in enumerate(real)]
     pedido = (
         f"{fatos}\n\nSENTENCES:\n" + "\n".join(lista) + "\n\n"
         "For each sentence, decide if EVERYTHING it says is stated in the FACTS or BACKGROUND above (simple rewording is fine). "
@@ -306,7 +317,7 @@ def conferir_frases(fatos, every, real):
     )
     r = ia([{"role": "system", "content": "You are a strict fact-checker. You only answer with JSON."}, {"role": "user", "content": pedido}], max_tokens=300, temperatura=0)
     fora = {str(x).strip().upper() for x in r.get("unsupported", []) if isinstance(x, (str, int))}
-    return [f for i, f in enumerate(every) if f"E{i + 1}" not in fora], [f for i, f in enumerate(real) if f"R{i + 1}" not in fora], sorted(fora)
+    return [f for i, f in enumerate(real) if f"R{i + 1}" not in fora], sorted(fora)
 
 
 COMUNS = set(
@@ -343,18 +354,24 @@ NOTA_PEDIDO = (
 )
 
 
-def produzir(fatos, n_every, n_real, nota=False, veiculos=()):
+# Tamanho mínimo que o Portal aceita (10/10/2026): nota de 5 a 10 frases, completa com 9 ou mais. Abaixo disso a
+# notícia não é resumo da matéria, é manchete esticada — foi a reclamação do usuário sobre a edição de 10/10.
+MIN_NOTA = 5
+MIN_COMPLETA = 9
+MAX_NOTA = 10
+
+
+def produzir(fatos, n_real, nota=False, veiculos=()):
     base = NOTA_PEDIDO if nota else "\nNever comment on what the news shows or means."
     extra = base
     n_gl = 6 if nota else 8
     for tentativa in range(1, 4):
-        d = escrever(fatos, n_every, n_real, extra, n_gl)
-        every = [str(x).strip() for x in d.get("everyday_sentences") or [] if str(x).strip()]
-        real = [str(x).strip() for x in d.get("real_sentences") or [] if str(x).strip()]
+        d = escrever(fatos, n_real, extra, n_gl)
+        real = [str(x).strip() for x in d.get("sentences") or [] if str(x).strip()]
         defeitos = []
-        if PORTUGUES.search(" ".join(every + real)):
+        if PORTUGUES.search(" ".join(real)):
             defeitos.append("some sentences are in Portuguese")
-        if len(every) < n_every - 1 or len(real) < n_real - 1:
+        if len(real) < n_real - 1:
             defeitos.append("not enough sentences")
         gl = [g for g in d.get("glossary") or [] if isinstance(g, dict) and g.get("word") and g.get("pt")]
         if len(gl) < (2 if nota else 5):
@@ -363,24 +380,25 @@ def produzir(fatos, n_every, n_real, nota=False, veiculos=()):
             break
         print(f"    tentativa {tentativa}: {defeitos}", flush=True)
         extra = base + "\nIMPORTANT: your last answer had problems: " + "; ".join(defeitos) + ". Fix them."
-    if PORTUGUES.search(" ".join(every + real)):
+    if PORTUGUES.search(" ".join(real)):
         return None, "português na saída"
-    every = tirar_inventadas(every, fatos)
     real = tirar_inventadas(real, fatos)
-    copiadas = [f for f in every + real if copiada(f, fatos)]
+    copiadas = [f for f in real if copiada(f, fatos)]
     if copiadas:
         print(f"    frase copiada da fonte tirada: {copiadas}", flush=True)
-    every = [f for f in every if f not in copiadas]
     real = [f for f in real if f not in copiadas]
-    every, fora_e = sem_comentario(every, veiculos, nota)
     real, fora_r = sem_comentario(real, veiculos, nota)
-    if fora_e or fora_r:
-        print(f"    comentário/veículo tirado: {fora_e + fora_r}", flush=True)
-    every, real, fora = conferir_frases(fatos, every, real)
+    if fora_r:
+        print(f"    comentário/veículo tirado: {fora_r}", flush=True)
+    real, fora = conferir_frases(fatos, real)
     if fora:
         print(f"    conferência tirou: {fora}", flush=True)
-    if (len(every) < 3 or len(real) < 3) if nota else (len(every) < 4 or len(real) < 5):
-        return None, f"sobrou pouco depois da conferência ({len(every)}/{len(real)})"
+    # Completa que encolheu demais na conferência vira NOTA, em vez de ser perdida — mas nunca abaixo do mínimo.
+    if not nota and len(real) < MIN_COMPLETA:
+        print(f"    completa com {len(real)} frases: vai como nota", flush=True)
+        nota = True
+    if len(real) < MIN_NOTA:
+        return None, f"sobrou pouco depois da conferência ({len(real)} frases)"
     texto_real = " ".join(real).lower()
     glossario = []
     for g in d.get("glossary") or []:
@@ -389,23 +407,21 @@ def produzir(fatos, n_every, n_real, nota=False, veiculos=()):
                 glossario.append({"termo": str(g["word"]).strip()[:60], "traducao": str(g["pt"]).strip()[:120]})
     return {
         "tipo": "NOTA" if nota else "COMPLETA",
-        "manchete": str(d.get("headline_real") or "").strip()[:160],
-        "mancheteEveryday": str(d.get("headline_everyday") or "").strip()[:160],
-        "everyday": every[:7] if nota else every[:10],
-        "real": real[:8] if nota else real[:12],
+        "manchete": str(d.get("headline") or "").strip()[:160],
+        "real": real[:MAX_NOTA] if nota else real[:20],
         "glossario": glossario,
-        "perguntas": gerar_perguntas(every, real, 3),
+        "perguntas": gerar_perguntas(real, 3),
     }, None
 
 
-def gerar_perguntas(every, real, quantas):
-    """Perguntas de compreensão (09/10/2026): em inglês, sobre os fatos da notícia, respondíveis só com o texto do
-    Everyday. Cada uma é conferida: a IA responde de novo lendo só o Everyday; se não acertar, a pergunta sai."""
-    simples, completo = " ".join(every), " ".join(real)
+def gerar_perguntas(real, quantas):
+    """Perguntas de compreensão (09/10/2026): em inglês, sobre os fatos da notícia, respondíveis só com o texto dela.
+    Cada uma é conferida: a IA responde de novo lendo só a notícia; se não acertar, a pergunta sai."""
+    simples = " ".join(real)
     pedido = (
-        f"STORY (simple version):\n{simples}\n\nSTORY (full version):\n{completo}\n\n"
-        f"Write {quantas + 1} multiple-choice reading comprehension questions in English for adult learners (CEFR A2-B1) about this story.\n"
-        "Rules: every question must be answerable using ONLY the simple version. Ask about the main facts: who, what, where, why, "
+        f"STORY:\n{simples}\n\n"
+        f"Write {quantas + 1} multiple-choice reading comprehension questions in English for adult learners (CEFR B1) about this story.\n"
+        "Rules: every question must be answerable using ONLY the story above. Ask about the main facts: who, what, where, why, "
         "how many, what happened, what will happen. Never ask what a word means. Never ask about something that is not in the story. "
         "Each question has EXACTLY 3 options, short (max 8 words), all about this story's topic and plausible, only one correct. "
         "No 'all of the above' or 'none of the above'.\n"
@@ -649,16 +665,17 @@ def escrever_noticia(g, nota):
         if fundo:
             fatos += "\n\n" + fundo
     palavras = len(fatos.split())
-    # Mais texto para o aluno ler e responder (09/10/2026): nota com 5-6 frases; completa com 7-10.
+    # Resumo de verdade (10/10/2026, relato do usuário: "não dá para deixar tão vago assim, com 1, 2, 3 frases").
+    # Pede-se mais do que o mínimo, porque a conferência de fatos sempre derruba alguma frase.
     if nota:
-        n_every, n_real = (5, 6) if palavras >= 120 else (4, 4)
+        n_real = 10 if palavras >= 120 else 8
     else:
-        n_every, n_real = (8, 10) if g.get("nasa") or palavras >= 400 else ((7, 9) if palavras >= 180 else (5, 6))
+        n_real = 16 if g.get("nasa") or palavras >= 400 else (14 if palavras >= 180 else 11)
     try:
-        n, motivo = produzir(fatos, n_every, n_real, nota=nota, veiculos={f["veiculo"] for f in g["fontes"]} | VEICULOS)
+        n, motivo = produzir(fatos, n_real, nota=nota, veiculos={f["veiculo"] for f in g["fontes"]} | VEICULOS)
     except Exception as e:  # noqa: BLE001
         n, motivo = None, f"erro: {e}"
-    if not n or not n["manchete"] or not n["mancheteEveryday"]:
+    if not n or not n["manchete"]:
         return None, motivo or "sem manchete"
     n["fontes"] = [{"veiculo": f["veiculo"], "titulo": f["titulo"][:300], "link": f["link"]} for f in g["fontes"]]
     n["linkPrincipal"] = principal["link"]
@@ -734,6 +751,24 @@ def so_feeds():
     """Teste rápido (sem IA): quantos itens cada feed traz e quantas notícias completas e notas sairiam."""
     linhas = ["# Feeds do Jornal", ""]
     plano = planejar()
+    # Quantos itens cada feed trouxe (10/10/2026): é assim que se descobre um feed morto antes de ele sumir calado
+    # da edição — foi o caso dos feeds antigos da Reuters.
+    vistos, mortos = {}, []
+    for _, regioes in TEMAS.values():
+        for feeds in regioes.values():
+            for veiculo, url in feeds:
+                if url in vistos:
+                    continue
+                try:
+                    vistos[url] = len(itens_do_feed(url, veiculo))
+                except Exception as e:  # noqa: BLE001
+                    vistos[url] = -1
+                    print(f"    feed com erro ({veiculo}): {e}", flush=True)
+                if vistos[url] <= 0:
+                    mortos.append(f"  - **{veiculo}**: `{url}`" + ("" if vistos[url] == 0 else " (erro)"))
+    linhas += [f"**Feeds:** {len(vistos)} conferidos, {len(mortos)} sem nenhum item.", ""]
+    if mortos:
+        linhas += ["### Feeds sem item (não entram na edição)", *mortos, ""]
     for chave, (nome, _) in TEMAS.items():
         for regiao in REGIOES:
             p = plano[chave][regiao]
@@ -813,7 +848,6 @@ def main():
         return 1
     print("Traduzindo…", flush=True)
     for n in noticias:
-        n["everydayPt"] = traduzir(n["everyday"])
         n["realPt"] = traduzir(n["real"])
     edicao = {"dia": dia, "modelo": MODELO, "temas": [nome], "noticias": noticias}
     os.makedirs("saida", exist_ok=True)
