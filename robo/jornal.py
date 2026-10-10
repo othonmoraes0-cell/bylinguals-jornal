@@ -111,6 +111,34 @@ TEMAS = {
     }),
 }
 REGIOES = ("US", "World", "Brazil")
+
+# Candidatos a feed (10/10/2026): URLs que ainda NÃO estão na edição e que o modo SO_FEEDS experimenta junto com as
+# outras. É assim que se descobre o endereço novo de um veículo cujo feed morreu, sem arriscar a edição do dia.
+# Quem passar no teste entra em TEMAS; quem não passar sai daqui.
+CANDIDATOS = [
+    ("Reuters world", "https://www.reuters.com/arc/outboundfeeds/rss/category/world/?outputType=xml"),
+    ("Reuters business", "https://www.reuters.com/arc/outboundfeeds/rss/category/business/?outputType=xml"),
+    ("Reuters tudo", "https://www.reuters.com/arc/outboundfeeds/rss/?outputType=xml"),
+    ("Reuters antigo", "https://www.reuters.com/rssFeed/worldNews"),
+    ("Reuters agency taxonomy", "https://www.reutersagency.com/feed/?taxonomy=best-topics&post_type=best&best-topics=business-finance"),
+    ("CNN Brasil raiz", "https://www.cnnbrasil.com.br/feed/"),
+    ("CNN Brasil nacional", "https://www.cnnbrasil.com.br/nacional/feed/"),
+    ("InfoMoney raiz", "https://www.infomoney.com.br/feed/"),
+    ("InfoMoney mercados", "https://www.infomoney.com.br/mercados/feed/"),
+    ("NYT Soccer", "https://rss.nytimes.com/services/xml/rss/nyt/Soccer.xml"),
+    ("NYT Sports 2", "https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/sports/rss.xml"),
+    ("ESPN top", "https://www.espn.com/espn/rss/news?device=desktop"),
+    ("ESPN nfl", "https://www.espn.com/espn/rss/nfl/news"),
+    ("UOL noticias", "https://rss.uol.com.br/feed/noticias.xml"),
+    ("Space.com 2", "https://www.space.com/feeds.xml"),
+    ("New Scientist 2", "https://www.newscientist.com/section/news/feed/"),
+    ("DW ciencia 2", "https://rss.dw.com/xml/rss-en-sci"),
+    ("Lance esportes", "https://www.lance.com.br/feed"),
+    ("Agência Brasil", "https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml"),
+    ("Estadão", "https://www.estadao.com.br/arc/outboundfeeds/feeds/rss/sections/ultimas/?outputType=xml"),
+    ("Veja", "https://veja.abril.com.br/feed/"),
+    ("Poder360 economia", "https://www.poder360.com.br/economia/feed/"),
+]
 # Todos os veículos (na nota, nenhum nome de veículo aparece no texto).
 VEICULOS = {v for _, regioes in TEMAS.values() for feeds in regioes.values() for v, _ in feeds} | {"Fox News", "Reuters", "AP", "Associated Press", "CNN", "BBC"}
 # Título que não é notícia: chamada para leitores, galeria de fotos, coluna assinada ("… | Fulano de Tal"), homenagem.
@@ -769,6 +797,16 @@ def so_feeds():
     linhas += [f"**Feeds:** {len(vistos)} conferidos, {len(mortos)} sem nenhum item.", ""]
     if mortos:
         linhas += ["### Feeds sem item (não entram na edição)", *mortos, ""]
+    if CANDIDATOS:
+        linhas += ["### Candidatos (ainda fora da edição)"]
+        for veiculo, url in CANDIDATOS:
+            try:
+                quantos = len(itens_do_feed(url, veiculo))
+            except Exception as e:  # noqa: BLE001
+                quantos, url = -1, f"{url} — erro: {str(e)[:80]}"
+            marca = "OK" if quantos > 0 else ("vazio" if quantos == 0 else "ERRO")
+            linhas.append(f"  - **{veiculo}** — {marca} ({max(0, quantos)} itens): `{url}`")
+        linhas.append("")
     for chave, (nome, _) in TEMAS.items():
         for regiao in REGIOES:
             p = plano[chave][regiao]
