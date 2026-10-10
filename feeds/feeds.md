@@ -1,30 +1,15 @@
 # Feeds do Jornal
 
-**Feeds:** 98 conferidos, 0 sem nenhum item.
+**Feeds:** 104 conferidos, 0 sem nenhum item.
 
 ### Candidatos (ainda fora da edição)
   - **Reuters world** — vazio (0 itens): `https://www.reuters.com/arc/outboundfeeds/rss/category/world/?outputType=xml`
   - **Reuters tudo** — vazio (0 itens): `https://www.reuters.com/arc/outboundfeeds/rss/?outputType=xml`
   - **Reuters agency** — vazio (0 itens): `https://www.reutersagency.com/feed/?best-topics=business-finance&post_type=best`
-  - **ESPN rss** — vazio (0 itens): `https://www.espn.com/espn/rss/news`
-  - **Sky Sports** — OK (20 itens): `https://www.skysports.com/rss/12040`
-  - **Space.com atual** — vazio (0 itens): `https://www.space.com/feeds/all`
-  - **Phys.org espaço** — OK (30 itens): `https://phys.org/rss-feed/space-news/`
-  - **Phys.org ciência** — OK (30 itens): `https://phys.org/rss-feed/`
-  - **Nature news** — OK (75 itens): `https://www.nature.com/nature.rss`
-  - **Science News** — OK (20 itens): `https://www.sciencenews.org/feed`
-  - **Scientific American** — OK (50 itens): `https://www.scientificamerican.com/platform/syndication/rss/`
-  - **STAT News** — OK (20 itens): `https://www.statnews.com/feed/`
-  - **Medical Xpress** — OK (30 itens): `https://medicalxpress.com/rss-feed/`
-  - **NIH** — vazio (0 itens): `https://www.nih.gov/news-events/news-releases/feed.xml`
-  - **Harvard Health** — vazio (0 itens): `https://www.health.harvard.edu/blog/feed`
-  - **NPR saúde 2** — OK (10 itens): `https://feeds.npr.org/103537970/rss.xml`
   - **AP top** — vazio (0 itens): `https://apnews.com/index.rss`
-  - **Rolling Stone** — OK (10 itens): `https://www.rollingstone.com/feed/`
-  - **Pitchfork** — OK (30 itens): `https://pitchfork.com/feed/feed-news/rss`
-  - **AV Club** — vazio (0 itens): `https://www.avclub.com/rss`
-  - **Deadline** — OK (12 itens): `https://deadline.com/feed/`
-  - **NPR cultura 2** — OK (10 itens): `https://feeds.npr.org/1047/rss.xml`
+  - **Yahoo Sports** — OK (50 itens): `https://sports.yahoo.com/rss/`
+  - **The Athletic** — vazio (0 itens): `https://www.nytimes.com/athletic/rss/`
+  - **USA Today esportes** — vazio (0 itens): `https://rssfeeds.usatoday.com/UsatodaycomSports-TopStories`
 
 - **Politics & Elections · US**: 3 completas, 0 notas
   - COMPLETA (NPR, CBS News, The New York Times, Fox News): U.S. imposes sweeping sanctions on International Criminal Court
@@ -51,7 +36,7 @@
   - NOTA (g1): Tarifaço dos EUA já afeta empresas; entenda quando os efeitos podem chegar ao seu bolso
   - NOTA (InfoMoney): É falso vídeo que diz que diarista e manicure terão que abrir CNPJ e emitir NF
 - **Business · US**: 2 completas, 1 notas
-  - COMPLETA (CNBC, The New York Times, CBS News, Fox News): Trump Media advisor Katie Zacharia offered White House press secretary role
+  - COMPLETA (CNBC, The New York Times, CBS News, Fox News, ABC News): Trump Media advisor Katie Zacharia offered White House press secretary role
   - COMPLETA (The New York Times, ABC News, CNBC): Europe’s Trade Tensions With China Are Coming to a Head
   - NOTA (The New York Times): What’s Dragging Down A.I. Efficiency? The ‘Verification Tax.’
 - **Business · World**: 0 completas, 3 notas
@@ -88,16 +73,16 @@
   - NOTA (g1): 'Ciência Aberta': centro que abriga o Sirius recebe público para apresentar curiosidades e atrações da ciência
 - **Sports · US**: 0 completas, 3 notas
   - NOTA (The New York Times): Soccer Watchalongs Like Stretford Paddock Offer a Broadcast Alternative
-  - NOTA (CBS Sports): UCLA vs. Oregon prediction, odds, time: Week 6 college football picks from proven model
+  - NOTA (CBS Sports): Fantasy football Week 5 PPR Cheat Sheet: Dave Richard weighs tough calls on Justin Herbert and Ollie Gordon
   - NOTA (Fox News): Dodgers-Brewers NLCS Game 1 Will Be Skubal vs. Misiorowski; Yamamoto For Game 2
 - **Sports · World**: 2 completas, 1 notas
   - COMPLETA (BBC, Sky Sports, Al Jazeera): Verstappen beats Ferraris to Singapore pole
-  - COMPLETA (BBC, The Guardian, Al Jazeera, DW): I've got my own questions on Man City case - Carrick
-  - NOTA (BBC): 'What this team has been crying out for' - Renshaw 190 lifts Australia
+  - COMPLETA (BBC, The Guardian, DW): I've got my own questions on Man City case - Carrick
+  - NOTA (The Guardian): Bruno Guimarães completes Arsenal comeback to end Leeds’ unbeaten run
 - **Sports · Brazil**: 1 completas, 2 notas
   - COMPLETA (CNN Brasil, Folha de S.Paulo, Veja): Cristiano Ronaldo é suspenso pela federação portuguesa após deixar seleção
   - NOTA (Folha de S.Paulo): Bia Souza termina Mundial de Judô na sétima posição
-  - NOTA (ge): Em parceria com CBF e Conmebol, FMF conclui capacitação para profissionais das categorias de base
+  - NOTA (ge): Entenda por que desempenho fora de casa liga alerta do Botafogo na reta final do Brasileiro
 - **Culture · US**: 0 completas, 3 notas
   - NOTA (The New York Times): Deniz Goktas, Jailed in Turkey for a Joke, Delivers a Bold Defense in Court
   - NOTA (NPR): 16 cozy activities to add to your fall bucket list
@@ -107,9 +92,9 @@
   - NOTA (The Guardian): ‘People forgot I existed’: Audrey Niffenegger on taking 14 years to write a sequel to The Time Traveler’s Wife
   - NOTA (BBC): Ashe was too scared to cancel her wedding - the story became a hit song
 - **Culture · Brazil**: 0 completas, 3 notas
+  - NOTA (Folha de S.Paulo): Babu Santana volta às novelas após três anos e entra em 'Por Você' como enfermeiro
+  - NOTA (g1): Saiba como Giulia Be conheceu o herdeiro da família Kennedy
   - NOTA (Folha de S.Paulo): Musical de 'Percy Jackson', em São Paulo, preserva o livro ante a fúria dos fãs
-  - NOTA (CNN Brasil): Dubdogz apostam em festas próprias e ampliam negócios na música eletrônica
-  - NOTA (Folha de S.Paulo): Natureza, corpos nus e Tarsila se encontram em exposições em São Paulo
 - **Space & Earth · US**: 2 completas, 1 notas
   - COMPLETA (NPR, Scientific American, ABC News): Isaias pummels the Gulf Coast, and plows through Alabama
   - COMPLETA (The New York Times, CBS News, CNBC, NPR): Trump Says He Will Import Russian Diesel Fuel Amid High Prices
@@ -130,7 +115,7 @@
   - NOTA (BBC): Screams, haunting scenes and deadly hide-and-seek, as Celebrity Traitors heats up
   - NOTA (Mental Floss): The Academy Award Winner Who Almost Starred in 'Hocus Pocus'
   - NOTA (The Guardian): ‘I just wasn’t going to give up’: the fight to free the longest-serving political prisoner in the US
-- **Entertainment & Curiosities · Brazil**: 1 completas, 2 notas
-  - COMPLETA (Folha de S.Paulo, CNN Brasil, g1): Volta da TV Globinho repercute nas redes, mas quase perde para Record na audiência
-  - NOTA (Veja): EON vende 1 milhão de tokens e monta operação global em torno de esmeralda de US$ 650 mi
-  - NOTA (Folha de S.Paulo): Babu Santana volta às novelas após três anos e entra em 'Por Você' como enfermeiro
+- **Entertainment & Curiosities · Brazil**: 0 completas, 3 notas
+  - NOTA (g1): 'Minha TV Globinho tá viva': web reage à edição especial do programa infantil
+  - NOTA (CNN Brasil): Dubdogz apostam em festas próprias e ampliam negócios na música eletrônica
+  - NOTA (CNN Brasil): Tony Bellotto e Malu Mader fazem rara aparição após câncer do cantor
