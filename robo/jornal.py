@@ -300,8 +300,70 @@ SISTEMA = (
     "a sentence from the FACTS. Strictly neutral and factual: no opinions, no judging adjectives, no speculation. If sources disagree, say what each source reports.\n"
     "BE SPECIFIC. Keep the exact thing the story is about: the medicine, the company, the person, the law, the place, the team, the number. "
     "NEVER replace a specific name with a general category word. Write 'GLP-1 weight-loss drugs such as Mounjaro', never just 'drugs'. "
-    "Write 'the Federal Reserve', never just 'the bank'. A sentence that could be about almost anything is a bad sentence: rewrite it with the name."
+    "Write 'the Federal Reserve', never just 'the bank'. A sentence that could be about almost anything is a bad sentence: rewrite it with the name.\n"
+    "Write in AMERICAN English, always: center (not centre), color (not colour), organized (not organised), program (not programme), traveled (not travelled), practice (not practise), gray (not grey), soccer (not football), elevator (not lift), truck (not lorry), apartment (not flat). Most of the sources are British: never copy their spelling."
 )
+
+
+# A escola da aula de ingles americano (10/10/2026, pedido do usuario). O pedido acima ja manda escrever
+# assim, mas quase toda fonte do jornal e britanica (BBC, Sky Sports, Guardian) e o modelo as vezes copia
+# a grafia da fonte: esta e a rede embaixo.
+BRITANICO = {
+    "centre": "center", "centres": "centers", "colour": "color", "colours": "colors",
+    "coloured": "colored", "colourful": "colorful", "favourite": "favorite", "favourites": "favorites",
+    "neighbour": "neighbor", "neighbours": "neighbors", "neighbourhood": "neighborhood",
+    "behaviour": "behavior", "behaviours": "behaviors", "flavour": "flavor", "labour": "labor",
+    "harbour": "harbor", "humour": "humor", "rumour": "rumor", "rumours": "rumors",
+    "organise": "organize", "organised": "organized", "organising": "organizing",
+    "organisation": "organization", "organisations": "organizations", "organisers": "organizers",
+    "realise": "realize", "realised": "realized", "realising": "realizing",
+    "recognise": "recognize", "recognised": "recognized", "recognises": "recognizes",
+    "apologise": "apologize", "apologised": "apologized", "analyse": "analyze",
+    "analysed": "analyzed", "specialise": "specialize", "specialised": "specialized",
+    "summarise": "summarize", "summarised": "summarized", "emphasise": "emphasize",
+    "emphasised": "emphasized", "criticise": "criticize", "criticised": "criticized",
+    "prioritise": "prioritize", "prioritised": "prioritized", "minimise": "minimize",
+    "maximise": "maximize", "utilise": "utilize", "modernise": "modernize",
+    "travelling": "traveling", "travelled": "traveled", "traveller": "traveler",
+    "travellers": "travelers", "cancelled": "canceled", "cancelling": "canceling",
+    "labelled": "labeled", "labelling": "labeling", "modelled": "modeled",
+    "programme": "program", "programmes": "programs", "theatre": "theater", "theatres": "theaters",
+    "metre": "meter", "metres": "meters", "kilometre": "kilometer", "kilometres": "kilometers",
+    "litre": "liter", "litres": "liters", "defence": "defense", "offence": "offense",
+    "practise": "practice", "practised": "practiced", "practising": "practicing",
+    "grey": "gray", "tyre": "tire", "tyres": "tires", "aluminium": "aluminum",
+    "sceptical": "skeptical", "jewellery": "jewelry", "enrolment": "enrollment",
+    "whilst": "while", "amongst": "among", "learnt": "learned", "maths": "math",
+    "lorry": "truck", "lorries": "trucks", "motorway": "highway", "motorways": "highways",
+    "pavement": "sidewalk", "rubbish": "trash", "mould": "mold", "moulds": "molds",
+}
+_BRIT = re.compile(r"\b(" + "|".join(sorted(BRITANICO, key=len, reverse=True)) + r")\b", re.I)
+
+
+def americano(texto):
+    """Grafia americana. Nome proprio no meio da frase nao entra: Centre Court, Labour Party e o nome de
+    um time ou de uma empresa continuam como sao."""
+    if not isinstance(texto, str):
+        return texto
+
+    def troca(m):
+        velho = m.group(0)
+        novo = BRITANICO[velho.lower()]
+        if velho[:1].isupper():
+            # Palavra com maiuscula no meio da frase: e nome proprio (Labour MPs, the Design Centre).
+            if m.start() > 0 and texto[m.start() - 1] not in ".!?\n\"'":
+                return velho
+            # No comeco da frase a maiuscula nao diz nada, entao olho a palavra seguinte: duas maiusculas
+            # seguidas sao um nome (Centre Court), uma maiuscula sozinha e so o comeco (Centre of the city).
+            if re.match(r"\s+[A-Z]", texto[m.end():]):
+                return velho
+        if velho.isupper():
+            return novo.upper()
+        if velho[:1].isupper():
+            return novo[:1].upper() + novo[1:]
+        return novo
+
+    return _BRIT.sub(troca, texto)
 
 PORTUGUES = re.compile(r"\b(não|são|está|também|após|pessoas|governo|então|foram|ainda|segundo|disse)\b", re.I)
 
@@ -321,7 +383,16 @@ def escrever(fatos, n_real, extra="", n_glossario=8):
         'Everything must be in English except the "pt" values. If a FACT is in Portuguese, translate it into English. Do not repeat a fact. '
         f"If there are not enough facts for the number of sentences, write fewer sentences: never invent and never pad. Return only the JSON.{extra}"
     )
-    return ia([{"role": "system", "content": SISTEMA}, {"role": "user", "content": pedido}])
+    saida = ia([{"role": "system", "content": SISTEMA}, {"role": "user", "content": pedido}])
+    if isinstance(saida, dict):
+        saida["headline"] = americano(saida.get("headline"))
+        if isinstance(saida.get("sentences"), list):
+            saida["sentences"] = [americano(f) for f in saida["sentences"]]
+        if isinstance(saida.get("glossary"), list):
+            saida["glossary"] = [
+                {**g, "word": americano(g.get("word"))} if isinstance(g, dict) else g for g in saida["glossary"]
+            ]
+    return saida
 
 
 def conferir_frases(fatos, real):
