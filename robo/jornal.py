@@ -88,8 +88,8 @@ TEMAS = {
         "Brazil": [("g1", G1.format("ciencia")), ("Folha de S.Paulo", FOLHA.format("ciencia")), ("Jornal da USP", "https://jornal.usp.br/feed/"), ("Pesquisa FAPESP", "https://revistapesquisa.fapesp.br/feed/")],
     }),
     "health": ("Health", {
-        "US": [("The New York Times", NYT + "Health.xml"), ("NPR", NPR.format(1128)), ("CBS News", CBS.format("health")), ("ABC News", ABC.format("healthheadlines")), ("Fox News", FOX.format("health"))],
-        "World": [("BBC", BBC.format("health")), ("The Guardian", GUA.format("society/health")), ("WHO", "https://www.who.int/rss-feeds/news-english.xml")],
+        "US": [("The New York Times", NYT + "Health.xml"), ("NPR", NPR.format(1128)), ("CBS News", CBS.format("health")), ("ABC News", ABC.format("healthheadlines")), ("Fox News", FOX.format("health")), ("STAT News", "https://www.statnews.com/feed/"), ("NPR", "https://feeds.npr.org/103537970/rss.xml")],
+        "World": [("BBC", BBC.format("health")), ("The Guardian", GUA.format("society/health")), ("WHO", "https://www.who.int/rss-feeds/news-english.xml"), ("Medical Xpress", "https://medicalxpress.com/rss-feed/")],
         "Brazil": [("g1", G1.format("saude")), ("Folha de S.Paulo", FOLHA.format("equilibrioesaude")), ("CNN Brasil", CNNBR, "/saude/"), ("g1", G1.format("ciencia-e-saude"))],
     }),
     "sports": ("Sports", {
@@ -98,7 +98,7 @@ TEMAS = {
         "Brazil": [("ge", "https://ge.globo.com/rss/ge/"), ("Folha de S.Paulo", FOLHA.format("esporte")), ("CNN Brasil", CNNBR, "/esportes/"), ("Estadão", ESTADAO, "/esportes/")],
     }),
     "culture": ("Culture", {
-        "US": [("The New York Times", NYT + "Arts.xml"), ("The New York Times", NYT + "Books.xml"), ("NPR", NPR.format(1008)), ("CBS News", CBS.format("entertainment"))],
+        "US": [("The New York Times", NYT + "Arts.xml"), ("The New York Times", NYT + "Books.xml"), ("NPR", NPR.format(1008)), ("CBS News", CBS.format("entertainment")), ("NPR", "https://feeds.npr.org/1047/rss.xml"), ("Rolling Stone", "https://www.rollingstone.com/feed/")],
         "World": [("BBC", BBC.format("entertainment_and_arts")), ("The Guardian", GUA.format("culture")), ("The Guardian", GUA.format("books")), ("DW", "https://rss.dw.com/rdf/rss-en-cul")],
         "Brazil": [("g1", G1.format("pop-arte")), ("Folha de S.Paulo", FOLHA.format("ilustrada")), ("CNN Brasil", CNNBR, "/pop/")],
     }),
@@ -108,8 +108,8 @@ TEMAS = {
         "Brazil": [("g1", G1.format("natureza")), ("Folha de S.Paulo", FOLHA.format("ambiente")), ("g1", G1.format("ciencia")), ("Jornal da USP", "https://jornal.usp.br/feed/")],
     }),
     "entertainment": ("Entertainment & Curiosities", {
-        "US": [("The New York Times", NYT + "Movies.xml"), ("The New York Times", NYT + "Television.xml"), ("Variety", "https://variety.com/feed/"), ("The Hollywood Reporter", "https://www.hollywoodreporter.com/feed/"), ("Smithsonian", "https://www.smithsonianmag.com/rss/latest_articles/")],
-        "World": [("The Guardian", GUA.format("film")), ("The Guardian", GUA.format("music")), ("BBC", BBC.format("entertainment_and_arts")), ("Mental Floss", "https://www.mentalfloss.com/rss.xml")],
+        "US": [("The New York Times", NYT + "Movies.xml"), ("The New York Times", NYT + "Television.xml"), ("Variety", "https://variety.com/feed/"), ("The Hollywood Reporter", "https://www.hollywoodreporter.com/feed/"), ("Deadline", "https://deadline.com/feed/"), ("Smithsonian", "https://www.smithsonianmag.com/rss/latest_articles/")],
+        "World": [("The Guardian", GUA.format("film")), ("The Guardian", GUA.format("music")), ("BBC", BBC.format("entertainment_and_arts")), ("Mental Floss", "https://www.mentalfloss.com/rss.xml"), ("Deadline", "https://deadline.com/feed/")],
         "Brazil": [("g1", G1.format("pop-arte")), ("CNN Brasil", CNNBR, "/pop/"), ("Veja", "https://veja.abril.com.br/feed/"), ("Folha de S.Paulo", FOLHA.format("ilustrada"))],
     }),
 }
@@ -123,26 +123,11 @@ CANDIDATOS = [
     ("Reuters world", "https://www.reuters.com/arc/outboundfeeds/rss/category/world/?outputType=xml"),
     ("Reuters tudo", "https://www.reuters.com/arc/outboundfeeds/rss/?outputType=xml"),
     ("Reuters agency", "https://www.reutersagency.com/feed/?best-topics=business-finance&post_type=best"),
-    # Buracos que sobraram: esporte dos EUA, espaço e ciência do mundo.
-    ("ESPN rss", "https://www.espn.com/espn/rss/news"),
-    ("Sky Sports", "https://www.skysports.com/rss/12040"),
-    ("Space.com atual", "https://www.space.com/feeds/all"),
-    ("Phys.org espaço", "https://phys.org/rss-feed/space-news/"),
-    ("Phys.org ciência", "https://phys.org/rss-feed/"),
-    ("Nature news", "https://www.nature.com/nature.rss"),
-    ("Science News", "https://www.sciencenews.org/feed"),
-    ("Scientific American", "https://www.scientificamerican.com/platform/syndication/rss/"),
-    ("STAT News", "https://www.statnews.com/feed/"),
-    ("Medical Xpress", "https://medicalxpress.com/rss-feed/"),
-    ("NIH", "https://www.nih.gov/news-events/news-releases/feed.xml"),
-    ("Harvard Health", "https://www.health.harvard.edu/blog/feed"),
-    ("NPR saúde 2", "https://feeds.npr.org/103537970/rss.xml"),
     ("AP top", "https://apnews.com/index.rss"),
-    ("Rolling Stone", "https://www.rollingstone.com/feed/"),
-    ("Pitchfork", "https://pitchfork.com/feed/feed-news/rss"),
-    ("AV Club", "https://www.avclub.com/rss"),
-    ("Deadline", "https://deadline.com/feed/"),
-    ("NPR cultura 2", "https://feeds.npr.org/1047/rss.xml"),
+    # Esporte dos EUA ainda é o tema mais fraco: a ESPN não tem mais feed.
+    ("Yahoo Sports", "https://sports.yahoo.com/rss/"),
+    ("The Athletic", "https://www.nytimes.com/athletic/rss/"),
+    ("USA Today esportes", "https://rssfeeds.usatoday.com/UsatodaycomSports-TopStories"),
 ]
 # Todos os veículos (na nota, nenhum nome de veículo aparece no texto).
 VEICULOS = {f[0] for _, regioes in TEMAS.values() for feeds in regioes.values() for f in feeds} | {"Fox News", "Reuters", "AP", "Associated Press", "CNN", "BBC"}
