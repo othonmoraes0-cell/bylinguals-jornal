@@ -27,6 +27,30 @@
   - **Reuters**: `https://www.reutersagency.com/feed/?best-topics=environment&post_type=best`
   - **UOL**: `https://rss.uol.com.br/feed/entretenimento.xml`
 
+### Candidatos (ainda fora da edição)
+  - **Reuters world** — vazio (0 itens): `https://www.reuters.com/arc/outboundfeeds/rss/category/world/?outputType=xml`
+  - **Reuters business** — vazio (0 itens): `https://www.reuters.com/arc/outboundfeeds/rss/category/business/?outputType=xml`
+  - **Reuters tudo** — vazio (0 itens): `https://www.reuters.com/arc/outboundfeeds/rss/?outputType=xml`
+  - **Reuters antigo** — vazio (0 itens): `https://www.reuters.com/rssFeed/worldNews`
+  - **Reuters agency taxonomy** — vazio (0 itens): `https://www.reutersagency.com/feed/?taxonomy=best-topics&post_type=best&best-topics=business-finance`
+  - **CNN Brasil raiz** — OK (60 itens): `https://www.cnnbrasil.com.br/feed/`
+  - **CNN Brasil nacional** — vazio (0 itens): `https://www.cnnbrasil.com.br/nacional/feed/`
+  - **InfoMoney raiz** — OK (10 itens): `https://www.infomoney.com.br/feed/`
+  - **InfoMoney mercados** — vazio (0 itens): `https://www.infomoney.com.br/mercados/feed/`
+  - **NYT Soccer** — OK (20 itens): `https://rss.nytimes.com/services/xml/rss/nyt/Soccer.xml`
+  - **NYT Sports 2** — vazio (0 itens): `https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/sports/rss.xml`
+  - **ESPN top** — vazio (0 itens): `https://www.espn.com/espn/rss/news?device=desktop`
+  - **ESPN nfl** — vazio (0 itens): `https://www.espn.com/espn/rss/nfl/news`
+  - **UOL noticias** — vazio (0 itens): `https://rss.uol.com.br/feed/noticias.xml`
+  - **Space.com 2** — vazio (0 itens): `https://www.space.com/feeds.xml`
+  - **New Scientist 2** — vazio (0 itens): `https://www.newscientist.com/section/news/feed/`
+  - **DW ciencia 2** — vazio (0 itens): `https://rss.dw.com/xml/rss-en-sci`
+  - **Lance esportes** — vazio (0 itens): `https://www.lance.com.br/feed`
+  - **Agência Brasil** — OK (10 itens): `https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml`
+  - **Estadão** — OK (20 itens): `https://www.estadao.com.br/arc/outboundfeeds/feeds/rss/sections/ultimas/?outputType=xml`
+  - **Veja** — OK (20 itens): `https://veja.abril.com.br/feed/`
+  - **Poder360 economia** — vazio (0 itens): `https://www.poder360.com.br/economia/feed/`
+
 - **Politics & Elections · US**: 3 completas, 0 notas
   - COMPLETA (NPR, CBS News, The New York Times, Fox News): U.S. imposes sweeping sanctions on International Criminal Court
   - COMPLETA (Fox News, The New York Times, CBS News): Veteran shot 7 times in Fort Hood massacre has a warning for Americans planning to watch execution
@@ -34,7 +58,7 @@
 - **Politics & Elections · World**: 3 completas, 0 notas
   - COMPLETA (BBC, DW, France 24, The Guardian): 'Cockroach' group leaders among hundreds detained in Delhi protest
   - COMPLETA (Al Jazeera, France 24, The New York Times): Abbas postpones Palestinian legislative elections to September 2027
-  - COMPLETA (The Guardian, BBC, DW): Three men found guilty of murders of Australian surfer brothers and US friend in Mexico
+  - COMPLETA (The Guardian, DW, BBC): Three men found guilty of murders of Australian surfer brothers and US friend in Mexico
 - **Politics & Elections · Brazil**: 3 completas, 0 notas
   - COMPLETA (BBC News Brasil, Folha de S.Paulo, g1, Exame): Como Jair Bolsonaro quase conseguiu em 2022 a virada que Lula almeja no 2º turno
   - COMPLETA (BBC News Brasil, g1, Folha de S.Paulo): Por que Douglas Ruas deve se tornar governador do Rio dias depois do 1º turno
@@ -88,9 +112,9 @@
   - NOTA (g1): Covid longa pode estar ligada a alterações no sistema de dopamina do cérebro, aponta estudo
   - NOTA (Folha de S.Paulo): Saúde mental é principal preocupação em relação à saúde para 58% dos brasileiros, diz pesquisa
 - **Sports · US**: 0 completas, 3 notas
-  - NOTA (CBS Sports): College football picks, Week 6 best bets from Vegas expert: This parlay could return +600
+  - NOTA (CBS Sports): Fantasy football rankings Week 5: Dave Richard's tough start/sit calls include benching Jalen Hurts
   - NOTA (Fox News): Dodgers-Brewers NLCS Game 1 Will Be Skubal vs. Misiorowski; Yamamoto For Game 2
-  - NOTA (CBS Sports): White Sox vs. Guardians prediction, odds, time: 2026 MLB ALDS Game 5 picks from advanced model
+  - NOTA (CBS Sports): College football picks, Week 6 best bets from Vegas expert: This parlay could return +600
 - **Sports · World**: 1 completas, 2 notas
   - COMPLETA (BBC, The Guardian, DW): I've got my own questions on Man City case - Carrick
   - NOTA (BBC): Verstappen beats Ferraris to Singapore pole
