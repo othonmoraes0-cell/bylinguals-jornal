@@ -7,6 +7,8 @@ name: Jornal do Club (The Bylinguals Daily)
 # O robô de cada tema para logo no começo se o tema já chegou ao Portal hoje.
 on:
   schedule:
+    - cron: "37 3 * * *" # 0h37 em São Paulo: tentativa extra (o GitHub costuma atrasar os disparos por horas)
+    - cron: "17 5 * * *" # 2h17 em São Paulo: tentativa extra
     - cron: "37 4 * * *" # 1h37 em São Paulo: a edição leva cerca de 1h30 e precisa estar pronta antes das 7h
     - cron: "17 6 * * *" # 3h17 em São Paulo: segunda tentativa (se a edição já chegou, o robô para logo no começo)
   workflow_dispatch:
