@@ -1,16 +1,14 @@
 name: Jornal do Club (The Bylinguals Daily)
 
-# 9 temas, um robô por tema, em paralelo (cada um ~1h): 3 notícias dos EUA, 3 do mundo e 3 do Brasil por tema.
+# 9 temas, um robô por tema, em paralelo (cada um ~1h): 2 notícias dos EUA, 2 do mundo e 2 do Brasil por tema (eram 3 até 07/11/2026).
 # Modelo aberto (Qwen2.5 14B) no processador do GitHub, grátis. Fontes: só título e resumo dos feeds; NASA inteira.
 # Notícia completa só com 3+ veículos (ou NASA); o resto vira nota curta de um veículo; toda frase passa por conferência.
 # Repositório só do jornal (09/10/2026): se o GitHub um dia limitar o jornal pelo volume, o robô das legendas continua.
 # O robô de cada tema para logo no começo se o tema já chegou ao Portal hoje.
 on:
   schedule:
-    - cron: "37 3 * * *" # 0h37 em São Paulo: tentativa extra (o GitHub costuma atrasar os disparos por horas)
-    - cron: "17 5 * * *" # 2h17 em São Paulo: tentativa extra
     - cron: "37 4 * * *" # 1h37 em São Paulo: a edição leva cerca de 1h30 e precisa estar pronta antes das 7h
-    - cron: "17 6 * * *" # 3h17 em São Paulo: segunda tentativa (se a edição já chegou, o robô para logo no começo)
+    - cron: "17 6 * * *" # 3h17 em São Paulo: segunda tentativa (se a edição já chegou, o robô para logo no começo). 07/11/2026: eram 4 tentativas, caiu para 2 (consumo do GitHub)
   workflow_dispatch:
     inputs:
       forcar:
@@ -81,6 +79,7 @@ jobs:
       SECO: ${{ inputs.seco || 'false' }}
       DIA: ${{ inputs.dia }}
       TEMA: ${{ matrix.tema }}
+      POR_REGIAO: "2" # 07/11/2026: eram 3 por região (81 notícias/dia); agora 2 (54/dia) para reduzir o consumo
       MODELO_ROTULO: qwen2.5-14b
     steps:
       - name: Este tema hoje?
